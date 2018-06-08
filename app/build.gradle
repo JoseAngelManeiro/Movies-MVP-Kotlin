@@ -1,0 +1,71 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion "28.0.0"
+    defaultConfig {
+        applicationId "com.joseangelmaneiro.movies"
+        minSdkVersion 21
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    testImplementation "junit:junit:$rootProject.jUnitVersion"
+
+    implementation "com.android.support:appcompat-v7:$rootProject.androidSupportVersion"
+    implementation "com.android.support:design:$rootProject.androidSupportVersion"
+    implementation "com.android.support:cardview-v7:$rootProject.androidSupportVersion"
+
+    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLOVersion"
+
+    androidTestImplementation("com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion", {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    androidTestImplementation("com.android.support.test.espresso:espresso-contrib:$rootProject.espressoVersion") {
+        exclude module: 'support-annotations'
+        exclude module: 'recyclerview-v7'
+        exclude module: 'support-v4'
+        exclude module: 'appcompat-v7'
+        exclude module: 'design'
+    }
+    androidTestImplementation("com.android.support.test.espresso:espresso-intents:$espressoVersion") {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestImplementation("com.android.support.test:runner:$rootProject.testSupportVersion") {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestImplementation("com.android.support.test:rules:$rootProject.testSupportVersion") {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
+    implementation "com.google.dagger:dagger:$rootProject.daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
+    kapt "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$rootProject.daggerVersion"
+
+    implementation "io.reactivex.rxjava2:rxkotlin:$rootProject.rxKotlinVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
+
+    testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
+    androidTestImplementation "org.mockito:mockito-android:$rootProject.mockitoVersion"
+
+    androidTestImplementation "com.github.fabioCollini.daggermock:daggermock-kotlin:$rootProject.daggerMockVersion"
+}
