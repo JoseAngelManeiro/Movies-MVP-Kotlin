@@ -1,4 +1,4 @@
-package com.joseangelmaneiro.movies
+package com.joseangelmaneiro.movies.ui
 
 
 interface BaseView {

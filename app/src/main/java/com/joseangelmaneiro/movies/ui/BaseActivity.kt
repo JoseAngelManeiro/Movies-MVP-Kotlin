@@ -1,7 +1,8 @@
-package com.joseangelmaneiro.movies
+package com.joseangelmaneiro.movies.ui
 
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AlertDialog
+import com.joseangelmaneiro.movies.R
 
 abstract class BaseActivity : AppCompatActivity(), BaseView {
 

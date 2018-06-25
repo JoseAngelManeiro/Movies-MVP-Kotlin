@@ -1,7 +1,8 @@
-package com.joseangelmaneiro.movies
+package com.joseangelmaneiro.movies.ui.list
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.joseangelmaneiro.movies.R
 
 class MovieListActivity : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package com.joseangelmaneiro.movies
+package com.joseangelmaneiro.movies.ui.list
 
 import android.content.Context
 import android.support.v7.widget.GridLayoutManager
