@@ -18,9 +18,3 @@ data class Movie(
         @SerializedName("adult") val adult: Boolean,
         @SerializedName("overview") val overview: String,
         @SerializedName("release_date") val releaseDate: String)
-
-data class Page(
-        @SerializedName("page") val page: Int,
-        @SerializedName("total_results") val totalResults: Int,
-        @SerializedName("total_pages") val totalPages: Int,
-        @SerializedName("results") val movies: List<Movie>)
