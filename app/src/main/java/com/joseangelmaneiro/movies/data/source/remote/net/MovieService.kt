@@ -1,5 +1,6 @@
-package com.joseangelmaneiro.movies.data
+package com.joseangelmaneiro.movies.data.source.remote.net
 
+import com.joseangelmaneiro.movies.data.Page
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

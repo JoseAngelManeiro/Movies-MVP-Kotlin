@@ -1,4 +1,4 @@
-package com.joseangelmaneiro.movies.data
+package com.joseangelmaneiro.movies.data.source.remote.net
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
