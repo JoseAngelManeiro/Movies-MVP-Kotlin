@@ -28,6 +28,7 @@ ext {
     mockitoVersion = '2.8.47'
     picassoVersion = '2.5.2'
     retrofitVersion = '2.1.0'
+    mockitoKotlinVersion = '2.0.0-RC1'
 }
 
 task clean(type: Delete) {
