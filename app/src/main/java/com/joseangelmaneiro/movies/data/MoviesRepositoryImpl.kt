@@ -9,14 +9,18 @@ class MoviesRepositoryImpl private constructor(
         private val remoteDataSource: MoviesRemoteDataSource): MoviesRepository {
 
     companion object {
-        private var INSTANCE: MoviesRepository? = null
+        private var INSTANCE: MoviesRepositoryImpl? = null
 
         fun getInstance(localDataSource: MoviesLocalDataSource,
-                        remoteDataSource: MoviesRemoteDataSource): MoviesRepository{
+                        remoteDataSource: MoviesRemoteDataSource): MoviesRepositoryImpl{
             if(INSTANCE==null){
                 INSTANCE = MoviesRepositoryImpl(localDataSource, remoteDataSource)
             }
             return INSTANCE!!
+        }
+
+        fun destroyInstance() {
+            INSTANCE = null
         }
     }
 
