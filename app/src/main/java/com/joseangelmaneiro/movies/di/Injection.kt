@@ -13,16 +13,19 @@ import com.joseangelmaneiro.movies.data.source.remote.net.RetrofitClient
 
 class Injection {
 
-    fun provideRepository(context: Context): MoviesRepository {
-        return MoviesRepositoryImpl.getInstance(getLocalDataSource(context), getRemoteDataSource())
-    }
+    companion object {
+        fun provideRepository(context: Context): MoviesRepository {
+            return MoviesRepositoryImpl.getInstance(getLocalDataSource(context),
+                    getRemoteDataSource())
+        }
 
-    private fun getLocalDataSource(context: Context): MoviesLocalDataSource {
-        return MoviesLocalDataSourceImpl.getInstance(MoviesDatabaseHelper.getInstance(context))
-    }
+        private fun getLocalDataSource(context: Context): MoviesLocalDataSource {
+            return MoviesLocalDataSourceImpl.getInstance(MoviesDatabaseHelper.getInstance(context))
+        }
 
-    private fun getRemoteDataSource(): MoviesRemoteDataSource {
-        return MoviesRemoteDataSourceImpl.getInstance(RetrofitClient.INSTANCE)
+        private fun getRemoteDataSource(): MoviesRemoteDataSource {
+            return MoviesRemoteDataSourceImpl.getInstance(RetrofitClient.INSTANCE)
+        }
     }
 
 }
