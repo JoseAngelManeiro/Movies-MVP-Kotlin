@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Movies</string>
     <string name="error_has_ocurred">An error has occurred</string>
+    <string name="movie_poster">Movie Poster</string>
 </resources>
