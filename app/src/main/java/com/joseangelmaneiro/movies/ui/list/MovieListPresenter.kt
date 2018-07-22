@@ -60,23 +60,27 @@ class MovieListPresenter(private val repository: MoviesRepository,
     fun onItemClick(position: Int) {
         val movie = getMovie(position)
         saveSelectedMovieId(movie.id)
-        view.get()?.navigateToDetailScreen(selectedMovieId)
+        view.get()?.navigateToDetailScreen(getSelectedMovieId())
     }
 
     fun saveMovies(movieList: List<Movie>) {
         this.movieList = movieList
     }
 
-    fun getMovie(position: Int): Movie {
+    private fun getMovie(position: Int): Movie {
         return movieList[position]
     }
 
-    fun saveSelectedMovieId(selectedMovieId: Int) {
+    private fun saveSelectedMovieId(selectedMovieId: Int) {
         this.selectedMovieId = selectedMovieId
     }
 
     fun moviesListIsEmpty(): Boolean {
         return movieList.isEmpty()
+    }
+
+    fun getSelectedMovieId(): Int {
+        return selectedMovieId
     }
 
 }
