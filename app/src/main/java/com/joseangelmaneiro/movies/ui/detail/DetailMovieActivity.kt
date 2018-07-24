@@ -11,9 +11,11 @@ import kotlinx.android.synthetic.main.activity_detail_movie.*
 import kotlinx.android.synthetic.main.content_detail_movie.*
 
 
-const val EXTRA_MOVIE_ID = "MOVIE_ID"
-
 class DetailMovieActivity : BaseActivity(), DetailMovieView {
+
+    companion object {
+        const val EXTRA_MOVIE_ID = "MOVIE_ID"
+    }
 
     private lateinit var presenter: DetailMoviePresenter
 
