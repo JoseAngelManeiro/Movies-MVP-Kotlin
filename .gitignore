@@ -64,3 +64,4 @@ freeline_project_description.json
 build/generated/mockable-android-24.jar
 *.rawproto
 app/lint-results.html
+.idea/runConfigurations.xml
