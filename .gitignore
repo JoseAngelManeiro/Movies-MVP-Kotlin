@@ -65,3 +65,5 @@ build/generated/mockable-android-24.jar
 *.rawproto
 app/lint-results.html
 .idea/runConfigurations.xml
+
+projectFilesBackup/.idea/workspace.xml
