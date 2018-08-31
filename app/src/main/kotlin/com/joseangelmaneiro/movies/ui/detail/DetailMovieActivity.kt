@@ -9,12 +9,19 @@ import com.joseangelmaneiro.movies.ui.Formatter
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail_movie.*
 import kotlinx.android.synthetic.main.content_detail_movie.*
+import android.content.Intent
+import android.app.Activity
 
 
 class DetailMovieActivity : BaseActivity(), DetailMovieView {
 
     companion object {
         const val EXTRA_MOVIE_ID = "MOVIE_ID"
+        fun launch(activity: Activity, movieId: Int) {
+            val intent = Intent(activity, DetailMovieActivity::class.java)
+            intent.putExtra(EXTRA_MOVIE_ID, movieId)
+            activity.startActivity(intent)
+        }
     }
 
     private lateinit var presenter: DetailMoviePresenter

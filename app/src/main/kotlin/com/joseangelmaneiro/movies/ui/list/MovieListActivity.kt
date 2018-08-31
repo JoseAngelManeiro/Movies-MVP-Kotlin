@@ -1,12 +1,11 @@
 package com.joseangelmaneiro.movies.ui.list
 
-import android.content.Intent
 import android.os.Bundle
 import com.joseangelmaneiro.movies.R
 import com.joseangelmaneiro.movies.di.Injection
+import com.joseangelmaneiro.movies.platform.navigateToDetail
 import com.joseangelmaneiro.movies.ui.BaseActivity
 import com.joseangelmaneiro.movies.ui.Formatter
-import com.joseangelmaneiro.movies.ui.detail.DetailMovieActivity
 import kotlinx.android.synthetic.main.activity_movie_list.*
 
 
@@ -68,9 +67,7 @@ class MovieListActivity : BaseActivity(), MovieListView {
     }
 
     override fun navigateToDetailScreen(movieId: Int) {
-        val intent = Intent(this, DetailMovieActivity::class.java)
-        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE_ID, movieId)
-        startActivity(intent)
+        navigateToDetail(movieId)
     }
 
 }
