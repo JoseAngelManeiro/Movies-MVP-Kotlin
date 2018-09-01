@@ -3,6 +3,7 @@ package com.joseangelmaneiro.movies.data
 import com.joseangelmaneiro.movies.TestUtils
 import com.joseangelmaneiro.movies.data.source.local.MoviesLocalDataSource
 import com.joseangelmaneiro.movies.data.source.remote.MoviesRemoteDataSource
+import com.joseangelmaneiro.movies.domain.Handler
 import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.verify

@@ -2,6 +2,8 @@ package com.joseangelmaneiro.movies.data
 
 import com.joseangelmaneiro.movies.data.source.local.MoviesLocalDataSource
 import com.joseangelmaneiro.movies.data.source.remote.MoviesRemoteDataSource
+import com.joseangelmaneiro.movies.domain.Handler
+import com.joseangelmaneiro.movies.domain.MoviesRepository
 
 
 class MoviesRepositoryImpl private constructor(
@@ -25,7 +27,7 @@ class MoviesRepositoryImpl private constructor(
     }
 
     override fun getMovies(handler: Handler<List<Movie>>) {
-        remoteDataSource.getMovies(object : Handler<List<Movie>>{
+        remoteDataSource.getMovies(object : Handler<List<Movie>> {
             override fun handle(movieList: List<Movie>) {
                 localDataSource.deleteAllMovies()
                 localDataSource.saveMovies(movieList)
@@ -39,7 +41,7 @@ class MoviesRepositoryImpl private constructor(
     }
 
     override fun getMovie(movieId: Int, handler: Handler<Movie>) {
-        localDataSource.getMovie(movieId, object : Handler<Movie>{
+        localDataSource.getMovie(movieId, object : Handler<Movie> {
             override fun handle(movie: Movie) {
                 handler.handle(movie)
             }

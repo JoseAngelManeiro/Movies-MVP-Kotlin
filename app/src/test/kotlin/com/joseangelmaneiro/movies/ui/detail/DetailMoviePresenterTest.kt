@@ -1,9 +1,9 @@
 package com.joseangelmaneiro.movies.ui.detail
 
 import com.joseangelmaneiro.movies.TestUtils
-import com.joseangelmaneiro.movies.data.Handler
+import com.joseangelmaneiro.movies.domain.Handler
 import com.joseangelmaneiro.movies.data.Movie
-import com.joseangelmaneiro.movies.data.MoviesRepository
+import com.joseangelmaneiro.movies.domain.MoviesRepository
 import com.joseangelmaneiro.movies.ui.Formatter
 import com.nhaarman.mockitokotlin2.*
 import org.junit.Assert.*

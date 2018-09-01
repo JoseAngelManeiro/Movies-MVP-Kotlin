@@ -1,4 +1,6 @@
-package com.joseangelmaneiro.movies.data
+package com.joseangelmaneiro.movies.domain
+
+import com.joseangelmaneiro.movies.data.Movie
 
 
 interface MoviesRepository {

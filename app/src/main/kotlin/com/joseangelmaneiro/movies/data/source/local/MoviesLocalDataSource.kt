@@ -1,6 +1,6 @@
 package com.joseangelmaneiro.movies.data.source.local
 
-import com.joseangelmaneiro.movies.data.Handler
+import com.joseangelmaneiro.movies.domain.Handler
 import com.joseangelmaneiro.movies.data.Movie
 
 

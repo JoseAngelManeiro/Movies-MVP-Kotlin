@@ -1,7 +1,7 @@
 package com.joseangelmaneiro.movies.di
 
 import android.content.Context
-import com.joseangelmaneiro.movies.data.MoviesRepository
+import com.joseangelmaneiro.movies.domain.MoviesRepository
 import com.joseangelmaneiro.movies.data.MoviesRepositoryImpl
 import com.joseangelmaneiro.movies.data.source.local.MoviesDatabaseHelper
 import com.joseangelmaneiro.movies.data.source.local.MoviesLocalDataSource
