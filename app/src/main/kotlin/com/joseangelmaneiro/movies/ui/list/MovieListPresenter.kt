@@ -1,18 +1,18 @@
 package com.joseangelmaneiro.movies.ui.list
 
 import com.joseangelmaneiro.movies.domain.Handler
-import com.joseangelmaneiro.movies.data.Movie
+import com.joseangelmaneiro.movies.data.entity.MovieEntity
 import com.joseangelmaneiro.movies.domain.MoviesRepository
 import com.joseangelmaneiro.movies.ui.Formatter
 import java.lang.ref.WeakReference
 
 
 class MovieListPresenter(private val repository: MoviesRepository,
-                         private val formatter: Formatter) : Handler<List<Movie>> {
+                         private val formatter: Formatter) : Handler<List<MovieEntity>> {
 
     private lateinit var view: WeakReference<MovieListView>
 
-    private var movieList = emptyList<Movie>()
+    private var movieList = emptyList<MovieEntity>()
 
     private var selectedMovieId: Int = 0
 
@@ -33,7 +33,7 @@ class MovieListPresenter(private val repository: MoviesRepository,
         repository.getMovies(this)
     }
 
-    override fun handle(movieList: List<Movie>) {
+    override fun handle(movieList: List<MovieEntity>) {
         saveMovies(movieList)
         view.get()?.let {
             it.cancelRefreshDialog()
@@ -63,11 +63,11 @@ class MovieListPresenter(private val repository: MoviesRepository,
         view.get()?.navigateToDetailScreen(getSelectedMovieId())
     }
 
-    fun saveMovies(movieList: List<Movie>) {
+    fun saveMovies(movieList: List<MovieEntity>) {
         this.movieList = movieList
     }
 
-    private fun getMovie(position: Int): Movie {
+    private fun getMovie(position: Int): MovieEntity {
         return movieList[position]
     }
 

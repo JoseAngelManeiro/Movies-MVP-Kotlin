@@ -1,7 +1,7 @@
 package com.joseangelmaneiro.movies.ui.detail
 
 import com.joseangelmaneiro.movies.domain.Handler
-import com.joseangelmaneiro.movies.data.Movie
+import com.joseangelmaneiro.movies.data.entity.MovieEntity
 import com.joseangelmaneiro.movies.domain.MoviesRepository
 import com.joseangelmaneiro.movies.ui.Formatter
 import java.lang.ref.WeakReference
@@ -9,7 +9,7 @@ import java.lang.ref.WeakReference
 
 class DetailMoviePresenter(private val repository: MoviesRepository,
                            private val formatter: Formatter,
-                           private val movieId: Int) : Handler<Movie> {
+                           private val movieId: Int) : Handler<MovieEntity> {
 
     private lateinit var view: WeakReference<DetailMovieView>
     
@@ -22,7 +22,7 @@ class DetailMoviePresenter(private val repository: MoviesRepository,
         repository.getMovie(movieId, this)
     }
 
-    override fun handle(movie: Movie) {
+    override fun handle(movie: MovieEntity) {
         view.get()?.let { detailMovieView ->
             detailMovieView.displayImage(formatter.getCompleteUrlImage(movie.backdropPath))
             detailMovieView.displayTitle(movie.title)

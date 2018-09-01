@@ -2,7 +2,7 @@ package com.joseangelmaneiro.movies.ui.detail
 
 import com.joseangelmaneiro.movies.TestUtils
 import com.joseangelmaneiro.movies.domain.Handler
-import com.joseangelmaneiro.movies.data.Movie
+import com.joseangelmaneiro.movies.data.entity.MovieEntity
 import com.joseangelmaneiro.movies.domain.MoviesRepository
 import com.joseangelmaneiro.movies.ui.Formatter
 import com.nhaarman.mockitokotlin2.*
@@ -25,7 +25,7 @@ class DetailMoviePresenterTest {
     private lateinit var formatter: Formatter
     @Mock
     private lateinit var view: DetailMovieView
-    private val movieHandlerCaptor = argumentCaptor<Handler<Movie>>()
+    private val movieHandlerCaptor = argumentCaptor<Handler<MovieEntity>>()
     private val textCaptor = argumentCaptor<String>()
     private val intCaptor = argumentCaptor<Int>()
 
@@ -118,7 +118,7 @@ class DetailMoviePresenterTest {
     }
 
 
-    private fun setMovieAvailable(movie: Movie) {
+    private fun setMovieAvailable(movie: MovieEntity) {
         verify(repository).getMovie(eq(MOVIE_ID), movieHandlerCaptor.capture())
         movieHandlerCaptor.firstValue.handle(movie)
     }

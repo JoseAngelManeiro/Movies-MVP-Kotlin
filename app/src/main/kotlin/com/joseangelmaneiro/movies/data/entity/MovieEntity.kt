@@ -1,9 +1,9 @@
-package com.joseangelmaneiro.movies.data
+package com.joseangelmaneiro.movies.data.entity
 
 import com.google.gson.annotations.SerializedName
 
 
-data class Movie(
+data class MovieEntity(
         @SerializedName("vote_count") val voteCount: Int,
         @SerializedName("id") val id: Int,
         @SerializedName("video") val video: Boolean,

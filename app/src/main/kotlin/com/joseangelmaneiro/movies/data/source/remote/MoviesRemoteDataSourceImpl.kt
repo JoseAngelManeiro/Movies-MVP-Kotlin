@@ -1,8 +1,8 @@
 package com.joseangelmaneiro.movies.data.source.remote
 
 import com.joseangelmaneiro.movies.domain.Handler
-import com.joseangelmaneiro.movies.data.Movie
-import com.joseangelmaneiro.movies.data.Page
+import com.joseangelmaneiro.movies.data.entity.MovieEntity
+import com.joseangelmaneiro.movies.data.entity.PageEntity
 import com.joseangelmaneiro.movies.data.source.remote.net.MovieService
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,9 +25,9 @@ class MoviesRemoteDataSourceImpl private constructor(
         }
     }
 
-    override fun getMovies(handler: Handler<List<Movie>>) {
-        movieService.getMovies(API_KEY).enqueue(object : Callback<Page>{
-            override fun onResponse(call: Call<Page>?, response: Response<Page>?) {
+    override fun getMovies(handler: Handler<List<MovieEntity>>) {
+        movieService.getMovies(API_KEY).enqueue(object : Callback<PageEntity>{
+            override fun onResponse(call: Call<PageEntity>?, response: Response<PageEntity>?) {
                 val page = response?.body()
                 if(page!=null){
                     handler.handle(page.movies)
@@ -36,7 +36,7 @@ class MoviesRemoteDataSourceImpl private constructor(
                 }
             }
 
-            override fun onFailure(call: Call<Page>?, t: Throwable?) {
+            override fun onFailure(call: Call<PageEntity>?, t: Throwable?) {
                 handler.error()
             }
         })

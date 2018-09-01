@@ -1,6 +1,7 @@
 package com.joseangelmaneiro.movies.data
 
 import com.joseangelmaneiro.movies.TestUtils
+import com.joseangelmaneiro.movies.data.entity.MovieEntity
 import com.joseangelmaneiro.movies.data.source.local.MoviesLocalDataSource
 import com.joseangelmaneiro.movies.data.source.remote.MoviesRemoteDataSource
 import com.joseangelmaneiro.movies.domain.Handler
@@ -26,12 +27,12 @@ class MoviesRepositoryImplTest {
     @Mock
     private lateinit var remoteDataSource: MoviesRemoteDataSource
     @Mock
-    private lateinit var moviesHandler: Handler<List<Movie>>
+    private lateinit var moviesHandler: Handler<List<MovieEntity>>
     @Mock
-    private lateinit var movieHandler: Handler<Movie>
+    private lateinit var movieHandler: Handler<MovieEntity>
 
-    private val moviesHandlerCaptor = argumentCaptor<Handler<List<Movie>>>()
-    private val movieHandlerCaptor = argumentCaptor<Handler<Movie>>()
+    private val moviesHandlerCaptor = argumentCaptor<Handler<List<MovieEntity>>>()
+    private val movieHandlerCaptor = argumentCaptor<Handler<MovieEntity>>()
 
 
 
@@ -107,9 +108,9 @@ class MoviesRepositoryImplTest {
         moviesHandlerCaptor.firstValue.error()
     }
 
-    private fun setMoviesAvailable(movieList: List<Movie>) {
+    private fun setMoviesAvailable(movieEntityList: List<MovieEntity>) {
         verify(remoteDataSource).getMovies(moviesHandlerCaptor.capture())
-        moviesHandlerCaptor.firstValue.handle(movieList)
+        moviesHandlerCaptor.firstValue.handle(movieEntityList)
     }
 
     private fun setMovieError(movieId: Int) {
@@ -117,9 +118,9 @@ class MoviesRepositoryImplTest {
         movieHandlerCaptor.firstValue.error()
     }
 
-    private fun setMovieAvailable(movie: Movie) {
-        verify(localDataSource).getMovie(eq(movie.id), movieHandlerCaptor.capture())
-        movieHandlerCaptor.firstValue.handle(movie)
+    private fun setMovieAvailable(movieEntity: MovieEntity) {
+        verify(localDataSource).getMovie(eq(movieEntity.id), movieHandlerCaptor.capture())
+        movieHandlerCaptor.firstValue.handle(movieEntity)
     }
 
 }

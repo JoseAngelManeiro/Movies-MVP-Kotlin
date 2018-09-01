@@ -1,7 +1,7 @@
 package com.joseangelmaneiro.movies
 
-import com.joseangelmaneiro.movies.data.Movie
-import com.joseangelmaneiro.movies.data.Page
+import com.joseangelmaneiro.movies.data.entity.MovieEntity
+import com.joseangelmaneiro.movies.data.entity.PageEntity
 import java.util.ArrayList
 
 
@@ -9,42 +9,42 @@ class TestUtils {
 
     companion object {
 
-        fun createMainPage(): Page {
-            return Page(
+        fun createMainPage(): PageEntity {
+            return PageEntity(
                     MAIN_NUM_PAGE,
                     MAIN_TOTAL_RESULTS,
                     MAIN_TOTAL_PAGES,
                     createMovieList(MAIN_NUM_MOVIES))
         }
 
-        fun createAltPage(): Page {
-            return Page(
+        fun createAltPage(): PageEntity {
+            return PageEntity(
                     ALT_NUM_PAGE,
                     ALT_TOTAL_RESULTS,
                     ALT_TOTAL_PAGES,
                     createMovieList(ALT_NUM_MOVIES))
         }
 
-        fun createMainMovie(): Movie {
-            return Movie(VOTE_COUNT, MAIN_MOVIE_ID, MOVIE_VIDEO, MAIN_VOTE_AVERAGE, MAIN_MOVIE_TITLE,
+        fun createMainMovie(): MovieEntity {
+            return MovieEntity(VOTE_COUNT, MAIN_MOVIE_ID, MOVIE_VIDEO, MAIN_VOTE_AVERAGE, MAIN_MOVIE_TITLE,
                     MOVIE_POPULARITY, POSTER_PATH, MAIN_ORIGINAL_LANGUAGE, MAIN_ORIGINAL_TITLE,
                     GENRE_IDS, BACKDROPPATH, ADULT, OVERVIEW, MAIN_RELEASE_DATE)
         }
 
-        fun createAltMovie(): Movie {
-            return Movie(VOTE_COUNT, ALT_MOVIE_ID, MOVIE_VIDEO, ALT_VOTE_AVERAGE, ALT_MOVIE_TITLE,
+        fun createAltMovie(): MovieEntity {
+            return MovieEntity(VOTE_COUNT, ALT_MOVIE_ID, MOVIE_VIDEO, ALT_VOTE_AVERAGE, ALT_MOVIE_TITLE,
                     MOVIE_POPULARITY, POSTER_PATH, ALT_ORIGINAL_LANGUAGE, ALT_ORIGINAL_TITLE,
                     GENRE_IDS, BACKDROPPATH, ADULT, OVERVIEW, ALT_RELEASE_DATE)
         }
 
-        fun createMainMovieList(): List<Movie> {
+        fun createMainMovieList(): List<MovieEntity> {
             return createMovieList(10)
         }
 
-        fun createMovieList(numMovies: Int): List<Movie> {
-            val movies = ArrayList<Movie>()
+        fun createMovieList(numMovies: Int): List<MovieEntity> {
+            val movies = ArrayList<MovieEntity>()
             for (i in 0 until numMovies) {
-                val movie = Movie(VOTE_COUNT, i, MOVIE_VIDEO, MAIN_VOTE_AVERAGE, MAIN_MOVIE_TITLE,
+                val movie = MovieEntity(VOTE_COUNT, i, MOVIE_VIDEO, MAIN_VOTE_AVERAGE, MAIN_MOVIE_TITLE,
                         MOVIE_POPULARITY, POSTER_PATH, MAIN_ORIGINAL_LANGUAGE, MAIN_ORIGINAL_TITLE,
                         GENRE_IDS, BACKDROPPATH, ADULT, OVERVIEW, MAIN_RELEASE_DATE)
                 movies.add(movie)

@@ -6,7 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
-import com.joseangelmaneiro.movies.data.Movie
+import com.joseangelmaneiro.movies.data.entity.MovieEntity
 
 
 // Database Info
@@ -80,14 +80,14 @@ class MoviesDatabaseHelper private constructor(context: Context):
         }
     }
 
-    fun addMovies(movieList: List<Movie>) {
+    fun addMovies(movieEntityList: List<MovieEntity>) {
         val db = writableDatabase
 
         // It's a good idea to wrap our insert in a transaction.
         // This helps with performance and ensures consistency of the database.
         db.beginTransaction()
         try {
-            for (movie in movieList) {
+            for (movie in movieEntityList) {
                 val values = ContentValues()
                 values.put(KEY_ID, movie.id)
                 values.put(KEY_VOTE_COUNT, movie.voteCount)
@@ -114,8 +114,8 @@ class MoviesDatabaseHelper private constructor(context: Context):
         }
     }
 
-    fun getAllMovies(): List<Movie> {
-        val movieList = mutableListOf<Movie>()
+    fun getAllMovies(): List<MovieEntity> {
+        val movieList = mutableListOf<MovieEntity>()
 
         val MOVIES_SELECT_QUERY = "SELECT * FROM $TABLE_MOVIE"
 
@@ -137,8 +137,8 @@ class MoviesDatabaseHelper private constructor(context: Context):
         return movieList
     }
 
-    fun getMovie(id: Int): Movie? {
-        var movie: Movie? = null
+    fun getMovie(id: Int): MovieEntity? {
+        var movieEntity: MovieEntity? = null
 
         val MOVIE_SELECT_QUERY = "SELECT * FROM $TABLE_MOVIE WHERE $KEY_ID = $id"
 
@@ -147,7 +147,7 @@ class MoviesDatabaseHelper private constructor(context: Context):
         try {
             if (cursor!!.moveToFirst()) {
                 do {
-                    movie = createMovie(cursor)
+                    movieEntity = createMovie(cursor)
                 } while (cursor.moveToNext())
             }
         } catch (e: Exception) {
@@ -157,7 +157,7 @@ class MoviesDatabaseHelper private constructor(context: Context):
                 cursor.close()
             }
         }
-        return movie
+        return movieEntity
     }
 
     fun deleteAllMovies() {
@@ -170,8 +170,8 @@ class MoviesDatabaseHelper private constructor(context: Context):
 
     }
 
-    private fun createMovie(cursor: Cursor): Movie {
-        return Movie(
+    private fun createMovie(cursor: Cursor): MovieEntity {
+        return MovieEntity(
                 cursor.getInt(cursor.getColumnIndex(KEY_ID)),
                 cursor.getInt(cursor.getColumnIndex(KEY_VOTE_COUNT)),
                 cursor.getInt(cursor.getColumnIndex(KEY_VIDEO)) == 1,
@@ -182,7 +182,7 @@ class MoviesDatabaseHelper private constructor(context: Context):
                 cursor.getString(cursor.getColumnIndex(KEY_ORIGINAL_LANGUAGE)),
                 cursor.getString(cursor.getColumnIndex(KEY_ORIGINAL_TITLE)),
                 DBUtils.transformStringToIntegerList(
-                cursor.getString(cursor.getColumnIndex(KEY_GENRE_IDS))),
+                        cursor.getString(cursor.getColumnIndex(KEY_GENRE_IDS))),
                 cursor.getString(cursor.getColumnIndex(KEY_BACKDROPPATH)),
                 cursor.getInt(cursor.getColumnIndex(KEY_ADULT)) == 1,
                 cursor.getString(cursor.getColumnIndex(KEY_OVERVIEW)),

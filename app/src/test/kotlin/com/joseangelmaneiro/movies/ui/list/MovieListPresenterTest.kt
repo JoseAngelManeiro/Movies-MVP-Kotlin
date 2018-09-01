@@ -2,7 +2,7 @@ package com.joseangelmaneiro.movies.ui.list
 
 import com.joseangelmaneiro.movies.TestUtils
 import com.joseangelmaneiro.movies.domain.Handler
-import com.joseangelmaneiro.movies.data.Movie
+import com.joseangelmaneiro.movies.data.entity.MovieEntity
 import com.joseangelmaneiro.movies.domain.MoviesRepository
 import com.joseangelmaneiro.movies.ui.Formatter
 import com.nhaarman.mockitokotlin2.any
@@ -30,7 +30,7 @@ class MovieListPresenterTest {
     private lateinit var view: MovieListView
     @Mock
     private lateinit var cellView: MovieCellView
-    private val moviesHandlerCaptor = argumentCaptor<Handler<List<Movie>>>()
+    private val moviesHandlerCaptor = argumentCaptor<Handler<List<MovieEntity>>>()
     private val textCaptor = argumentCaptor<String>()
     private val intCaptor = argumentCaptor<Int>()
 
@@ -141,7 +141,7 @@ class MovieListPresenterTest {
     }
 
 
-    private fun setMoviesAvailable(movieList: List<Movie>) {
+    private fun setMoviesAvailable(movieList: List<MovieEntity>) {
         verify(repository).getMovies(moviesHandlerCaptor.capture())
         moviesHandlerCaptor.firstValue.handle(movieList)
     }

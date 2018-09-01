@@ -1,7 +1,7 @@
 package com.joseangelmaneiro.movies.data.source.local
 
 import com.joseangelmaneiro.movies.domain.Handler
-import com.joseangelmaneiro.movies.data.Movie
+import com.joseangelmaneiro.movies.data.entity.MovieEntity
 
 
 class MoviesLocalDataSourceImpl private constructor(
@@ -18,7 +18,7 @@ class MoviesLocalDataSourceImpl private constructor(
         }
     }
 
-    override fun getMovies(handler: Handler<List<Movie>>) {
+    override fun getMovies(handler: Handler<List<MovieEntity>>) {
         val movieList = moviesDatabaseHelper.getAllMovies()
         if (!movieList.isEmpty()) {
             handler.handle(movieList)
@@ -27,7 +27,7 @@ class MoviesLocalDataSourceImpl private constructor(
         }
     }
 
-    override fun getMovie(movieId: Int, handler: Handler<Movie>) {
+    override fun getMovie(movieId: Int, handler: Handler<MovieEntity>) {
         val movie = moviesDatabaseHelper.getMovie(movieId)
         if (movie != null) {
             handler.handle(movie)
@@ -36,8 +36,8 @@ class MoviesLocalDataSourceImpl private constructor(
         }
     }
 
-    override fun saveMovies(movieList: List<Movie>) {
-        moviesDatabaseHelper.addMovies(movieList)
+    override fun saveMovies(movieEntityList: List<MovieEntity>) {
+        moviesDatabaseHelper.addMovies(movieEntityList)
     }
 
     override fun deleteAllMovies() {
