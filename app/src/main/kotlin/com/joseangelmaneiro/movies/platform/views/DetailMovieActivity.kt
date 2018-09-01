@@ -1,16 +1,17 @@
-package com.joseangelmaneiro.movies.ui.detail
+package com.joseangelmaneiro.movies.platform.views
 
 import android.os.Bundle
 import android.view.MenuItem
 import com.joseangelmaneiro.movies.R
 import com.joseangelmaneiro.movies.di.Injection
-import com.joseangelmaneiro.movies.ui.BaseActivity
 import com.joseangelmaneiro.movies.ui.Formatter
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail_movie.*
 import kotlinx.android.synthetic.main.content_detail_movie.*
 import android.content.Intent
 import android.app.Activity
+import com.joseangelmaneiro.movies.ui.detail.DetailMoviePresenter
+import com.joseangelmaneiro.movies.ui.detail.DetailMovieView
 
 
 class DetailMovieActivity : BaseActivity(), DetailMovieView {

@@ -1,4 +1,4 @@
-package com.joseangelmaneiro.movies.ui.list
+package com.joseangelmaneiro.movies.platform.views
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.joseangelmaneiro.movies.R
+import com.joseangelmaneiro.movies.ui.list.MovieCellView
+import com.joseangelmaneiro.movies.ui.list.MovieListPresenter
 import com.squareup.picasso.Picasso
 
 

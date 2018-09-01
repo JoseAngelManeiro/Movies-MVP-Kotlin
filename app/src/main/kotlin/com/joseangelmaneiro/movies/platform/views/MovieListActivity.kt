@@ -1,11 +1,12 @@
-package com.joseangelmaneiro.movies.ui.list
+package com.joseangelmaneiro.movies.platform.views
 
 import android.os.Bundle
 import com.joseangelmaneiro.movies.R
 import com.joseangelmaneiro.movies.di.Injection
 import com.joseangelmaneiro.movies.platform.navigateToDetail
-import com.joseangelmaneiro.movies.ui.BaseActivity
 import com.joseangelmaneiro.movies.ui.Formatter
+import com.joseangelmaneiro.movies.ui.list.MovieListPresenter
+import com.joseangelmaneiro.movies.ui.list.MovieListView
 import kotlinx.android.synthetic.main.activity_movie_list.*
 
 
