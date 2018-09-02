@@ -2,9 +2,11 @@ package com.joseangelmaneiro.movies.data
 
 import com.joseangelmaneiro.movies.TestUtils
 import com.joseangelmaneiro.movies.data.entity.MovieEntity
+import com.joseangelmaneiro.movies.data.entity.mapper.EntityDataMapper
 import com.joseangelmaneiro.movies.data.source.local.MoviesLocalDataSource
 import com.joseangelmaneiro.movies.data.source.remote.MoviesRemoteDataSource
 import com.joseangelmaneiro.movies.domain.Handler
+import com.joseangelmaneiro.movies.domain.Movie
 import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.verify
@@ -17,8 +19,10 @@ import org.mockito.MockitoAnnotations
 
 class MoviesRepositoryImplTest {
 
-    private val movies = TestUtils.createMainMovieList()
-    private val movie = TestUtils.createMainMovie()
+    private val movieEntityList = TestUtils.createDefaultMovieEntityList()
+    private val movieEntity = TestUtils.createMovieEntity()
+    private val movieList = TestUtils.createDefaultMovieList()
+    private val movie = TestUtils.createMovie()
 
     private lateinit var sut: MoviesRepositoryImpl
 
@@ -27,20 +31,19 @@ class MoviesRepositoryImplTest {
     @Mock
     private lateinit var remoteDataSource: MoviesRemoteDataSource
     @Mock
-    private lateinit var moviesHandler: Handler<List<MovieEntity>>
+    private lateinit var moviesHandler: Handler<List<Movie>>
     @Mock
-    private lateinit var movieHandler: Handler<MovieEntity>
+    private lateinit var movieHandler: Handler<Movie>
 
     private val moviesHandlerCaptor = argumentCaptor<Handler<List<MovieEntity>>>()
     private val movieHandlerCaptor = argumentCaptor<Handler<MovieEntity>>()
-
 
 
     @Before
     @Throws(Exception::class)
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        sut = MoviesRepositoryImpl.getInstance(localDataSource, remoteDataSource)
+        sut = MoviesRepositoryImpl.getInstance(localDataSource, remoteDataSource, EntityDataMapper())
     }
 
     @After
@@ -54,16 +57,16 @@ class MoviesRepositoryImplTest {
         sut.getMovies(moviesHandler)
 
         // Make the remote data source return data
-        setMoviesAvailable(movies)
+        setMoviesAvailable(movieEntityList)
 
         // First verify that all movies are deleted from local data source
         verify(localDataSource).deleteAllMovies()
 
         // Verify that the data fetched from the remote data source was saved in local
-        verify(localDataSource).saveMovies(movies)
+        verify(localDataSource).saveMovies(movieEntityList)
 
         // Verify the movies from the remote data source are returned
-        verify(moviesHandler).handle(movies)
+        verify(moviesHandler).handle(movieList)
     }
 
     @Test
@@ -84,7 +87,7 @@ class MoviesRepositoryImplTest {
         sut.getMovie(movie.id, movieHandler)
 
         // Make the local data source return data
-        setMovieAvailable(movie)
+        setMovieAvailable(movieEntity)
 
         // Verify the movie from the local data source are returned
         verify(movieHandler).handle(movie)

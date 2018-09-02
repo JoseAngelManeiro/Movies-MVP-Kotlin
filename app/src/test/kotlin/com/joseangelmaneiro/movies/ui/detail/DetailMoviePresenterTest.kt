@@ -2,7 +2,7 @@ package com.joseangelmaneiro.movies.ui.detail
 
 import com.joseangelmaneiro.movies.TestUtils
 import com.joseangelmaneiro.movies.domain.Handler
-import com.joseangelmaneiro.movies.data.entity.MovieEntity
+import com.joseangelmaneiro.movies.domain.Movie
 import com.joseangelmaneiro.movies.domain.MoviesRepository
 import com.joseangelmaneiro.movies.ui.Formatter
 import com.nhaarman.mockitokotlin2.*
@@ -18,6 +18,8 @@ private const val MOVIE_ID = 1234
 
 class DetailMoviePresenterTest {
 
+    private val movie = TestUtils.createMovie()
+
     private lateinit var sut: DetailMoviePresenter
     @Mock
     private lateinit var repository: MoviesRepository
@@ -25,7 +27,7 @@ class DetailMoviePresenterTest {
     private lateinit var formatter: Formatter
     @Mock
     private lateinit var view: DetailMovieView
-    private val movieHandlerCaptor = argumentCaptor<Handler<MovieEntity>>()
+    private val movieHandlerCaptor = argumentCaptor<Handler<Movie>>()
     private val textCaptor = argumentCaptor<String>()
     private val intCaptor = argumentCaptor<Int>()
 
@@ -52,7 +54,7 @@ class DetailMoviePresenterTest {
         val fakePath = "fake-path"
         whenever(formatter.getCompleteUrlImage(anyString())).thenReturn(fakePath)
         sut.viewReady()
-        setMovieAvailable(TestUtils.createMainMovie())
+        setMovieAvailable(movie)
 
         verify(view).displayImage(textCaptor.capture())
         assertEquals(fakePath, textCaptor.firstValue)
@@ -60,7 +62,6 @@ class DetailMoviePresenterTest {
 
     @Test
     fun viewReady_InvokesDisplayTitle() {
-        val movie = TestUtils.createMainMovie()
         val titleExpected = movie.title
         sut.viewReady()
         setMovieAvailable(movie)
@@ -71,7 +72,6 @@ class DetailMoviePresenterTest {
 
     @Test
     fun viewReady_InvokesDisplayVoteAverage() {
-        val movie = TestUtils.createMainMovie()
         val voteAverageExpected = movie.voteAverage
         sut.viewReady()
         setMovieAvailable(movie)
@@ -85,7 +85,7 @@ class DetailMoviePresenterTest {
         val fakeDate = "22/10/2017"
         whenever(formatter.formatDate(anyString())).thenReturn(fakeDate)
         sut.viewReady()
-        setMovieAvailable(TestUtils.createMainMovie())
+        setMovieAvailable(movie)
 
         verify(view).displayReleaseDate(textCaptor.capture())
         assertEquals(fakeDate, textCaptor.firstValue)
@@ -93,7 +93,6 @@ class DetailMoviePresenterTest {
 
     @Test
     fun viewReady_InvokesDisplayOverview() {
-        val movie = TestUtils.createMainMovie()
         val overviewExpected = movie.overview
         sut.viewReady()
         setMovieAvailable(movie)
@@ -118,7 +117,7 @@ class DetailMoviePresenterTest {
     }
 
 
-    private fun setMovieAvailable(movie: MovieEntity) {
+    private fun setMovieAvailable(movie: Movie) {
         verify(repository).getMovie(eq(MOVIE_ID), movieHandlerCaptor.capture())
         movieHandlerCaptor.firstValue.handle(movie)
     }

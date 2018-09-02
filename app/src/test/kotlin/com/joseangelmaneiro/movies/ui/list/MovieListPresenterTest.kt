@@ -1,8 +1,9 @@
 package com.joseangelmaneiro.movies.ui.list
 
+import com.joseangelmaneiro.movies.DEFAULT_SIZE_LIST
 import com.joseangelmaneiro.movies.TestUtils
 import com.joseangelmaneiro.movies.domain.Handler
-import com.joseangelmaneiro.movies.data.entity.MovieEntity
+import com.joseangelmaneiro.movies.domain.Movie
 import com.joseangelmaneiro.movies.domain.MoviesRepository
 import com.joseangelmaneiro.movies.ui.Formatter
 import com.nhaarman.mockitokotlin2.any
@@ -21,6 +22,8 @@ const val URL_TO_DISPLAY = "fake_url"
 
 class MovieListPresenterTest {
 
+    private val defaultMovieList = TestUtils.createDefaultMovieList()
+
     private lateinit var sut: MovieListPresenter
     @Mock
     private lateinit var repository: MoviesRepository
@@ -30,7 +33,7 @@ class MovieListPresenterTest {
     private lateinit var view: MovieListView
     @Mock
     private lateinit var cellView: MovieCellView
-    private val moviesHandlerCaptor = argumentCaptor<Handler<List<MovieEntity>>>()
+    private val moviesHandlerCaptor = argumentCaptor<Handler<List<Movie>>>()
     private val textCaptor = argumentCaptor<String>()
     private val intCaptor = argumentCaptor<Int>()
 
@@ -65,8 +68,7 @@ class MovieListPresenterTest {
         assertTrue(sut.moviesListIsEmpty())
 
         sut.invokeGetMovies()
-
-        setMoviesAvailable(TestUtils.createMainMovieList())
+        setMoviesAvailable(defaultMovieList)
 
         // If repository returns movies, they are saved
         assertFalse(sut.moviesListIsEmpty())
@@ -75,8 +77,7 @@ class MovieListPresenterTest {
     @Test
     fun invokeGetMovies_RefreshesView() {
         sut.invokeGetMovies()
-
-        setMoviesAvailable(TestUtils.createMainMovieList())
+        setMoviesAvailable(defaultMovieList)
 
         verify(view).cancelRefreshDialog()
         verify(view).refreshList()
@@ -85,7 +86,6 @@ class MovieListPresenterTest {
     @Test
     fun invokeGetMovies_ShowsError() {
         sut.invokeGetMovies()
-
         setMoviesError()
 
         verify(view).cancelRefreshDialog()
@@ -99,15 +99,14 @@ class MovieListPresenterTest {
 
     @Test
     fun getItemsCount_ReturnsNumberOfItems() {
-        val itemsExpected = 10
-        sut.saveMovies(TestUtils.createMovieList(itemsExpected))
+        sut.saveMovies(defaultMovieList)
 
-        assertEquals(itemsExpected.toLong(), sut.getItemsCount().toLong())
+        assertEquals(DEFAULT_SIZE_LIST, sut.getItemsCount())
     }
 
     @Test
     fun configureCell_DisplaysImage() {
-        sut.saveMovies(TestUtils.createMainMovieList())
+        sut.saveMovies(defaultMovieList)
 
         sut.configureCell(cellView, 1)
 
@@ -118,9 +117,8 @@ class MovieListPresenterTest {
     @Test
     fun onItemClick_SavesSelectedMovieId() {
         val fakePosition = 0
-        val movieList = TestUtils.createMainMovieList()
-        val idExpected = movieList[fakePosition].id
-        sut.saveMovies(movieList)
+        val idExpected = defaultMovieList[fakePosition].id
+        sut.saveMovies(defaultMovieList)
 
         sut.onItemClick(fakePosition)
 
@@ -130,9 +128,8 @@ class MovieListPresenterTest {
     @Test
     fun onItemClick_InvokesNavigateToDetailScreen() {
         val fakePosition = 0
-        val movieList = TestUtils.createMainMovieList()
-        val idExpected = movieList[fakePosition].id
-        sut.saveMovies(movieList)
+        val idExpected = defaultMovieList[fakePosition].id
+        sut.saveMovies(defaultMovieList)
 
         sut.onItemClick(fakePosition)
 
@@ -141,7 +138,7 @@ class MovieListPresenterTest {
     }
 
 
-    private fun setMoviesAvailable(movieList: List<MovieEntity>) {
+    private fun setMoviesAvailable(movieList: List<Movie>) {
         verify(repository).getMovies(moviesHandlerCaptor.capture())
         moviesHandlerCaptor.firstValue.handle(movieList)
     }
