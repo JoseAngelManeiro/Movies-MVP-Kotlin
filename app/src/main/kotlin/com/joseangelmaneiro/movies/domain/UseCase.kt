@@ -1,8 +1,8 @@
 package com.joseangelmaneiro.movies.domain
 
 
-interface UseCase {
+interface UseCase<T, P> {
 
-    fun execute()
+    fun execute(handler: Handler<T>, params: P)
 
 }
