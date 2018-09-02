@@ -3,6 +3,7 @@ package com.joseangelmaneiro.movies.di
 import android.content.Context
 import com.joseangelmaneiro.movies.domain.MoviesRepository
 import com.joseangelmaneiro.movies.data.MoviesRepositoryImpl
+import com.joseangelmaneiro.movies.data.entity.mapper.EntityDataMapper
 import com.joseangelmaneiro.movies.data.source.local.MoviesDatabaseHelper
 import com.joseangelmaneiro.movies.data.source.local.MoviesLocalDataSource
 import com.joseangelmaneiro.movies.data.source.local.MoviesLocalDataSourceImpl
@@ -16,7 +17,7 @@ class Injection {
     companion object {
         fun provideRepository(context: Context): MoviesRepository {
             return MoviesRepositoryImpl.getInstance(getLocalDataSource(context),
-                    getRemoteDataSource())
+                    getRemoteDataSource(), EntityDataMapper())
         }
 
         private fun getLocalDataSource(context: Context): MoviesLocalDataSource {

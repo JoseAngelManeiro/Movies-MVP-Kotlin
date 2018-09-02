@@ -1,23 +1,27 @@
 package com.joseangelmaneiro.movies.data
 
 import com.joseangelmaneiro.movies.data.entity.MovieEntity
+import com.joseangelmaneiro.movies.data.entity.mapper.EntityDataMapper
 import com.joseangelmaneiro.movies.data.source.local.MoviesLocalDataSource
 import com.joseangelmaneiro.movies.data.source.remote.MoviesRemoteDataSource
 import com.joseangelmaneiro.movies.domain.Handler
+import com.joseangelmaneiro.movies.domain.Movie
 import com.joseangelmaneiro.movies.domain.MoviesRepository
 
 
 class MoviesRepositoryImpl private constructor(
         private val localDataSource: MoviesLocalDataSource,
-        private val remoteDataSource: MoviesRemoteDataSource): MoviesRepository {
+        private val remoteDataSource: MoviesRemoteDataSource,
+        private val entityDataMapper: EntityDataMapper): MoviesRepository {
 
     companion object {
         private var INSTANCE: MoviesRepositoryImpl? = null
 
         fun getInstance(localDataSource: MoviesLocalDataSource,
-                        remoteDataSource: MoviesRemoteDataSource): MoviesRepositoryImpl{
+                        remoteDataSource: MoviesRemoteDataSource,
+                        entityDataMapper: EntityDataMapper): MoviesRepositoryImpl{
             if(INSTANCE==null){
-                INSTANCE = MoviesRepositoryImpl(localDataSource, remoteDataSource)
+                INSTANCE = MoviesRepositoryImpl(localDataSource, remoteDataSource, entityDataMapper)
             }
             return INSTANCE!!
         }
@@ -27,12 +31,12 @@ class MoviesRepositoryImpl private constructor(
         }
     }
 
-    override fun getMovies(handler: Handler<List<MovieEntity>>) {
+    override fun getMovies(handler: Handler<List<Movie>>) {
         remoteDataSource.getMovies(object : Handler<List<MovieEntity>> {
-            override fun handle(movieList: List<MovieEntity>) {
+            override fun handle(movieEntityList: List<MovieEntity>) {
                 localDataSource.deleteAllMovies()
-                localDataSource.saveMovies(movieList)
-                handler.handle(movieList)
+                localDataSource.saveMovies(movieEntityList)
+                handler.handle(entityDataMapper.transform(movieEntityList))
             }
 
             override fun error() {
@@ -41,10 +45,10 @@ class MoviesRepositoryImpl private constructor(
         })
     }
 
-    override fun getMovie(movieId: Int, handler: Handler<MovieEntity>) {
+    override fun getMovie(movieId: Int, handler: Handler<Movie>) {
         localDataSource.getMovie(movieId, object : Handler<MovieEntity> {
             override fun handle(movieEntity: MovieEntity) {
-                handler.handle(movieEntity)
+                handler.handle(entityDataMapper.transform(movieEntity)!!)
             }
 
             override fun error() {
