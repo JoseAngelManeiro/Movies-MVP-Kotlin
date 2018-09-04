@@ -5,7 +5,10 @@ import com.joseangelmaneiro.movies.TestUtils
 import com.joseangelmaneiro.movies.domain.Handler
 import com.joseangelmaneiro.movies.domain.Movie
 import com.joseangelmaneiro.movies.domain.MoviesRepository
-import com.joseangelmaneiro.movies.ui.Formatter
+import com.joseangelmaneiro.movies.presentation.MovieCellView
+import com.joseangelmaneiro.movies.presentation.presenters.MovieListPresenter
+import com.joseangelmaneiro.movies.presentation.MovieListView
+import com.joseangelmaneiro.movies.presentation.formatters.Formatter
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.verify

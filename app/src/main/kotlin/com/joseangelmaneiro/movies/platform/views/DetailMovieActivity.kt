@@ -4,14 +4,14 @@ import android.os.Bundle
 import android.view.MenuItem
 import com.joseangelmaneiro.movies.R
 import com.joseangelmaneiro.movies.di.Injection
-import com.joseangelmaneiro.movies.ui.Formatter
+import com.joseangelmaneiro.movies.presentation.formatters.Formatter
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail_movie.*
 import kotlinx.android.synthetic.main.content_detail_movie.*
 import android.content.Intent
 import android.app.Activity
-import com.joseangelmaneiro.movies.ui.detail.DetailMoviePresenter
-import com.joseangelmaneiro.movies.ui.detail.DetailMovieView
+import com.joseangelmaneiro.movies.presentation.presenters.DetailMoviePresenter
+import com.joseangelmaneiro.movies.presentation.DetailMovieView
 
 
 class DetailMovieActivity : BaseActivity(), DetailMovieView {

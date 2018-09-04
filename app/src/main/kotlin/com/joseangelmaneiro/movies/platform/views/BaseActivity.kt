@@ -3,7 +3,7 @@ package com.joseangelmaneiro.movies.platform.views
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AlertDialog
 import com.joseangelmaneiro.movies.R
-import com.joseangelmaneiro.movies.ui.BaseView
+import com.joseangelmaneiro.movies.presentation.BaseView
 
 abstract class BaseActivity : AppCompatActivity(), BaseView {
 

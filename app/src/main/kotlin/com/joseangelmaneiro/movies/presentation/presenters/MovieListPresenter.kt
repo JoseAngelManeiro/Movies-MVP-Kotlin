@@ -1,9 +1,11 @@
-package com.joseangelmaneiro.movies.ui.list
+package com.joseangelmaneiro.movies.presentation.presenters
 
 import com.joseangelmaneiro.movies.domain.Handler
 import com.joseangelmaneiro.movies.domain.Movie
 import com.joseangelmaneiro.movies.domain.MoviesRepository
-import com.joseangelmaneiro.movies.ui.Formatter
+import com.joseangelmaneiro.movies.presentation.MovieCellView
+import com.joseangelmaneiro.movies.presentation.MovieListView
+import com.joseangelmaneiro.movies.presentation.formatters.Formatter
 import java.lang.ref.WeakReference
 
 

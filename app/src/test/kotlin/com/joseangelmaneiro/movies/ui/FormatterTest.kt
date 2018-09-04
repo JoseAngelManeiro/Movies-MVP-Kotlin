@@ -1,5 +1,6 @@
 package com.joseangelmaneiro.movies.ui
 
+import com.joseangelmaneiro.movies.presentation.formatters.Formatter
 import org.junit.Before
 import org.junit.Assert.*
 import org.junit.Test

@@ -1,6 +1,4 @@
-package com.joseangelmaneiro.movies.ui.detail
-
-import com.joseangelmaneiro.movies.ui.BaseView
+package com.joseangelmaneiro.movies.presentation
 
 
 interface DetailMovieView : BaseView {

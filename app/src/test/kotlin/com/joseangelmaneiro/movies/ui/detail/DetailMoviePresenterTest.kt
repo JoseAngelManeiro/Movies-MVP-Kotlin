@@ -4,7 +4,9 @@ import com.joseangelmaneiro.movies.TestUtils
 import com.joseangelmaneiro.movies.domain.Handler
 import com.joseangelmaneiro.movies.domain.Movie
 import com.joseangelmaneiro.movies.domain.MoviesRepository
-import com.joseangelmaneiro.movies.ui.Formatter
+import com.joseangelmaneiro.movies.presentation.presenters.DetailMoviePresenter
+import com.joseangelmaneiro.movies.presentation.DetailMovieView
+import com.joseangelmaneiro.movies.presentation.formatters.Formatter
 import com.nhaarman.mockitokotlin2.*
 import org.junit.Assert.*
 import org.junit.Before
