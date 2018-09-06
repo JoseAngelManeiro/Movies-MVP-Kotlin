@@ -4,15 +4,13 @@ import com.joseangelmaneiro.movies.DEFAULT_SIZE_LIST
 import com.joseangelmaneiro.movies.TestUtils
 import com.joseangelmaneiro.movies.domain.Handler
 import com.joseangelmaneiro.movies.domain.Movie
-import com.joseangelmaneiro.movies.domain.MoviesRepository
+import com.joseangelmaneiro.movies.domain.UseCase
+import com.joseangelmaneiro.movies.domain.interactor.UseCaseFactory
 import com.joseangelmaneiro.movies.presentation.MovieCellView
 import com.joseangelmaneiro.movies.presentation.presenters.MovieListPresenter
 import com.joseangelmaneiro.movies.presentation.MovieListView
 import com.joseangelmaneiro.movies.presentation.formatters.Formatter
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.argumentCaptor
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.*
 import org.junit.Before
 import org.junit.Assert.*
 import org.junit.Test
@@ -29,7 +27,9 @@ class MovieListPresenterTest {
 
     private lateinit var sut: MovieListPresenter
     @Mock
-    private lateinit var repository: MoviesRepository
+    private lateinit var useCaseFactory: UseCaseFactory
+    @Mock
+    private lateinit var useCase: UseCase<List<Movie>, Unit>
     @Mock
     private lateinit var formatter: Formatter
     @Mock
@@ -45,9 +45,10 @@ class MovieListPresenterTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        sut = MovieListPresenter(repository, formatter)
+        sut = MovieListPresenter(useCaseFactory, formatter)
         sut.setView(view)
 
+        whenever(useCaseFactory.getMovies()).thenReturn(useCase)
         whenever(formatter.getCompleteUrlImage(anyString())).thenReturn(URL_TO_DISPLAY)
     }
 
@@ -55,14 +56,14 @@ class MovieListPresenterTest {
     fun viewReady_InvokesGetMovies() {
         sut.viewReady()
 
-        verify(repository).getMovies(any())
+        verify(useCase).execute(any(), eq(Unit))
     }
 
     @Test
     fun refresh_InvokesGetMovies() {
         sut.refresh()
 
-        verify(repository).getMovies(any())
+        verify(useCase).execute(any(), eq(Unit))
     }
 
     @Test
@@ -142,12 +143,12 @@ class MovieListPresenterTest {
 
 
     private fun setMoviesAvailable(movieList: List<Movie>) {
-        verify(repository).getMovies(moviesHandlerCaptor.capture())
+        verify(useCase).execute(moviesHandlerCaptor.capture(), any())
         moviesHandlerCaptor.firstValue.handle(movieList)
     }
 
     private fun setMoviesError() {
-        verify(repository).getMovies(moviesHandlerCaptor.capture())
+        verify(useCase).execute(moviesHandlerCaptor.capture(), any())
         moviesHandlerCaptor.firstValue.error()
     }
 

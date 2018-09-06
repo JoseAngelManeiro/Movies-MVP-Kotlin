@@ -10,12 +10,17 @@ import com.joseangelmaneiro.movies.data.source.local.MoviesLocalDataSourceImpl
 import com.joseangelmaneiro.movies.data.source.remote.MoviesRemoteDataSource
 import com.joseangelmaneiro.movies.data.source.remote.MoviesRemoteDataSourceImpl
 import com.joseangelmaneiro.movies.data.source.remote.net.RetrofitClient
+import com.joseangelmaneiro.movies.domain.interactor.UseCaseFactory
 
 
 class Injection {
 
     companion object {
-        fun provideRepository(context: Context): MoviesRepository {
+        fun provideUseCaseFactory(context: Context): UseCaseFactory{
+            return UseCaseFactory(provideRepository(context))
+        }
+
+        private fun provideRepository(context: Context): MoviesRepository {
             return MoviesRepositoryImpl.getInstance(getLocalDataSource(context),
                     getRemoteDataSource(), EntityDataMapper())
         }

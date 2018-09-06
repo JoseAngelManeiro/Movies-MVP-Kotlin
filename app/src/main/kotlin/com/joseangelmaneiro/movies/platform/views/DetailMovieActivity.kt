@@ -41,8 +41,7 @@ class DetailMovieActivity : BaseActivity(), DetailMovieView {
 
     private fun setUpPresenter() {
         val movieId = intent.getIntExtra(EXTRA_MOVIE_ID, -1)
-        presenter = DetailMoviePresenter(
-                Injection.provideRepository(applicationContext),
+        presenter = DetailMoviePresenter(Injection.provideUseCaseFactory(applicationContext),
                 Formatter(),
                 movieId)
         presenter.setView(this)

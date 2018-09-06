@@ -3,7 +3,9 @@ package com.joseangelmaneiro.movies.ui.detail
 import com.joseangelmaneiro.movies.TestUtils
 import com.joseangelmaneiro.movies.domain.Handler
 import com.joseangelmaneiro.movies.domain.Movie
-import com.joseangelmaneiro.movies.domain.MoviesRepository
+import com.joseangelmaneiro.movies.domain.UseCase
+import com.joseangelmaneiro.movies.domain.interactor.GetMovie
+import com.joseangelmaneiro.movies.domain.interactor.UseCaseFactory
 import com.joseangelmaneiro.movies.presentation.presenters.DetailMoviePresenter
 import com.joseangelmaneiro.movies.presentation.DetailMovieView
 import com.joseangelmaneiro.movies.presentation.formatters.Formatter
@@ -24,14 +26,15 @@ class DetailMoviePresenterTest {
 
     private lateinit var sut: DetailMoviePresenter
     @Mock
-    private lateinit var repository: MoviesRepository
+    private lateinit var useCaseFactory: UseCaseFactory
+    @Mock
+    private lateinit var useCase: UseCase<Movie, GetMovie.Params>
     @Mock
     private lateinit var formatter: Formatter
     @Mock
     private lateinit var view: DetailMovieView
     private val movieHandlerCaptor = argumentCaptor<Handler<Movie>>()
-    private val textCaptor = argumentCaptor<String>()
-    private val intCaptor = argumentCaptor<Int>()
+    private val paramsCaptor = argumentCaptor<GetMovie.Params>()
 
 
     @Before
@@ -39,16 +42,18 @@ class DetailMoviePresenterTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        sut = DetailMoviePresenter(repository, formatter, MOVIE_ID)
+        sut = DetailMoviePresenter(useCaseFactory, formatter, MOVIE_ID)
         sut.setView(view)
+
+        whenever(useCaseFactory.getMovie()).thenReturn(useCase)
     }
 
     @Test
-    fun viewReady_InvokesGetMovie() {
+    fun viewReady_InvokesUseCase() {
         sut.viewReady()
 
-        verify(repository).getMovie(intCaptor.capture(), any())
-        assertEquals(MOVIE_ID.toLong(), intCaptor.firstValue.toLong())
+        verify(useCase).execute(any(), paramsCaptor.capture())
+        assertEquals(MOVIE_ID, paramsCaptor.firstValue.movieId)
     }
 
     @Test
@@ -58,28 +63,23 @@ class DetailMoviePresenterTest {
         sut.viewReady()
         setMovieAvailable(movie)
 
-        verify(view).displayImage(textCaptor.capture())
-        assertEquals(fakePath, textCaptor.firstValue)
+        verify(view).displayImage(eq(fakePath))
     }
 
     @Test
     fun viewReady_InvokesDisplayTitle() {
-        val titleExpected = movie.title
         sut.viewReady()
         setMovieAvailable(movie)
 
-        verify(view).displayTitle(textCaptor.capture())
-        assertEquals(titleExpected, textCaptor.firstValue)
+        verify(view).displayTitle(eq(movie.title))
     }
 
     @Test
     fun viewReady_InvokesDisplayVoteAverage() {
-        val voteAverageExpected = movie.voteAverage
         sut.viewReady()
         setMovieAvailable(movie)
 
-        verify(view).displayVoteAverage(textCaptor.capture())
-        assertEquals(voteAverageExpected, textCaptor.firstValue)
+        verify(view).displayVoteAverage(eq(movie.voteAverage))
     }
 
     @Test
@@ -89,18 +89,15 @@ class DetailMoviePresenterTest {
         sut.viewReady()
         setMovieAvailable(movie)
 
-        verify(view).displayReleaseDate(textCaptor.capture())
-        assertEquals(fakeDate, textCaptor.firstValue)
+        verify(view).displayReleaseDate(eq(fakeDate))
     }
 
     @Test
     fun viewReady_InvokesDisplayOverview() {
-        val overviewExpected = movie.overview
         sut.viewReady()
         setMovieAvailable(movie)
 
-        verify(view).displayOverview(textCaptor.capture())
-        assertEquals(overviewExpected, textCaptor.firstValue)
+        verify(view).displayOverview(eq(movie.overview))
     }
 
     @Test
@@ -120,12 +117,12 @@ class DetailMoviePresenterTest {
 
 
     private fun setMovieAvailable(movie: Movie) {
-        verify(repository).getMovie(eq(MOVIE_ID), movieHandlerCaptor.capture())
+        verify(useCase).execute(movieHandlerCaptor.capture(), any())
         movieHandlerCaptor.firstValue.handle(movie)
     }
 
     private fun setMoviesError() {
-        verify(repository).getMovie(eq(MOVIE_ID), movieHandlerCaptor.capture())
+        verify(useCase).execute(movieHandlerCaptor.capture(), any())
         movieHandlerCaptor.firstValue.error()
     }
 

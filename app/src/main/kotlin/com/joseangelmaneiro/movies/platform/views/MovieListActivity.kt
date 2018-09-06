@@ -33,7 +33,7 @@ class MovieListActivity : BaseActivity(), MovieListView {
     }
 
     private fun setUpPresenter() {
-        presenter = MovieListPresenter(Injection.provideRepository(applicationContext),
+        presenter = MovieListPresenter(Injection.provideUseCaseFactory(applicationContext),
                 Formatter())
         presenter.setView(this)
     }

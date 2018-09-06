@@ -2,13 +2,14 @@ package com.joseangelmaneiro.movies.presentation.presenters
 
 import com.joseangelmaneiro.movies.domain.Handler
 import com.joseangelmaneiro.movies.domain.Movie
-import com.joseangelmaneiro.movies.domain.MoviesRepository
+import com.joseangelmaneiro.movies.domain.interactor.GetMovie
+import com.joseangelmaneiro.movies.domain.interactor.UseCaseFactory
 import com.joseangelmaneiro.movies.presentation.DetailMovieView
 import com.joseangelmaneiro.movies.presentation.formatters.Formatter
 import java.lang.ref.WeakReference
 
 
-class DetailMoviePresenter(private val repository: MoviesRepository,
+class DetailMoviePresenter(private val useCaseFactory: UseCaseFactory,
                            private val formatter: Formatter,
                            private val movieId: Int) : Handler<Movie> {
 
@@ -20,7 +21,8 @@ class DetailMoviePresenter(private val repository: MoviesRepository,
     }
 
     fun viewReady() {
-        repository.getMovie(movieId, this)
+        val useCase = useCaseFactory.getMovie()
+        useCase.execute(this, GetMovie.Params(movieId))
     }
 
     override fun handle(movie: Movie) {
