@@ -35,7 +35,7 @@ class DetailMoviePresenter(private val useCaseFactory: UseCaseFactory,
         }
     }
 
-    override fun error() {
+    override fun error(exception: Exception) {
         view.get()?.showErrorMessage()
     }
 

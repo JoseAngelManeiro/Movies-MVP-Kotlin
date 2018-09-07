@@ -149,7 +149,7 @@ class MovieListPresenterTest {
 
     private fun setMoviesError() {
         verify(useCase).execute(moviesHandlerCaptor.capture(), any())
-        moviesHandlerCaptor.firstValue.error()
+        moviesHandlerCaptor.firstValue.error(Exception())
     }
 
 }

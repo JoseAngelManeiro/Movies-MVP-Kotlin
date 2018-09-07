@@ -32,12 +32,12 @@ class MoviesRemoteDataSourceImpl private constructor(
                 if(page!=null){
                     handler.handle(page.movies)
                 } else{
-                    handler.error()
+                    handler.error(Exception())
                 }
             }
 
             override fun onFailure(call: Call<PageEntity>?, t: Throwable?) {
-                handler.error()
+                handler.error(Exception())
             }
         })
     }

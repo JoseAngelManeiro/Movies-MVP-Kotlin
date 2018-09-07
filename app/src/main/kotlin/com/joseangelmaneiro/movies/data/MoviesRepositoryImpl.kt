@@ -39,8 +39,8 @@ class MoviesRepositoryImpl private constructor(
                 handler.handle(entityDataMapper.transform(movieEntityList))
             }
 
-            override fun error() {
-                handler.error()
+            override fun error(exception: Exception) {
+                handler.error(exception)
             }
         })
     }

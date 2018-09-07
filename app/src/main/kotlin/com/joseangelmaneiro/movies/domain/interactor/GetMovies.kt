@@ -14,8 +14,8 @@ class GetMovies(private val repository: MoviesRepository): UseCase<List<Movie>, 
                 handler.handle(movies)
             }
 
-            override fun error() {
-                handler.error()
+            override fun error(exception: Exception) {
+                handler.error(exception)
             }
 
         })

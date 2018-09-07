@@ -123,7 +123,7 @@ class DetailMoviePresenterTest {
 
     private fun setMoviesError() {
         verify(useCase).execute(movieHandlerCaptor.capture(), any())
-        movieHandlerCaptor.firstValue.error()
+        movieHandlerCaptor.firstValue.error(Exception())
     }
 
 }

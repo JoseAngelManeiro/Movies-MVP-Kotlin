@@ -7,10 +7,7 @@ import com.joseangelmaneiro.movies.data.source.local.MoviesLocalDataSource
 import com.joseangelmaneiro.movies.data.source.remote.MoviesRemoteDataSource
 import com.joseangelmaneiro.movies.domain.Handler
 import com.joseangelmaneiro.movies.domain.Movie
-import com.nhaarman.mockitokotlin2.argumentCaptor
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.*
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -80,7 +77,7 @@ class MoviesRepositoryImplTest {
         setMoviesError()
 
         // Verify that the error is returned
-        verify(moviesHandler).error()
+        verify(moviesHandler).error(any())
     }
 
     @Test
@@ -98,7 +95,7 @@ class MoviesRepositoryImplTest {
 
     private fun setMoviesError() {
         verify(remoteDataSource).getMovies(moviesHandlerCaptor.capture())
-        moviesHandlerCaptor.firstValue.error()
+        moviesHandlerCaptor.firstValue.error(Exception())
     }
 
     private fun setMoviesAvailable(movieEntityList: List<MovieEntity>) {
