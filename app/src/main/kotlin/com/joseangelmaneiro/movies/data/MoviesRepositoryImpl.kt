@@ -46,15 +46,7 @@ class MoviesRepositoryImpl private constructor(
     }
 
     override fun getMovie(movieId: Int, handler: Handler<Movie>) {
-        localDataSource.getMovie(movieId, object : Handler<MovieEntity> {
-            override fun handle(movieEntity: MovieEntity) {
-                handler.handle(entityDataMapper.transform(movieEntity)!!)
-            }
-
-            override fun error() {
-                handler.error()
-            }
-        })
+        handler.handle(entityDataMapper.transform(localDataSource.getMovie(movieId))!!)
     }
 
 }

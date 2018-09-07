@@ -1,12 +1,8 @@
 package com.joseangelmaneiro.movies.data.source.local
 
-import android.content.ContentValues
 import android.content.Context
-import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.util.Log
-import com.joseangelmaneiro.movies.data.entity.MovieEntity
 
 
 // Database Info
@@ -78,115 +74,6 @@ class MoviesDatabaseHelper private constructor(context: Context):
             db.execSQL("DROP TABLE IF EXISTS $TABLE_MOVIE")
             onCreate(db)
         }
-    }
-
-    fun addMovies(movieEntityList: List<MovieEntity>) {
-        val db = writableDatabase
-
-        // It's a good idea to wrap our insert in a transaction.
-        // This helps with performance and ensures consistency of the database.
-        db.beginTransaction()
-        try {
-            for (movie in movieEntityList) {
-                val values = ContentValues()
-                values.put(KEY_ID, movie.id)
-                values.put(KEY_VOTE_COUNT, movie.voteCount)
-                values.put(KEY_VIDEO, if (movie.video) 1 else 0)
-                values.put(KEY_VOTE_AVERAGE, movie.voteAverage)
-                values.put(KEY_TITLE, movie.title)
-                values.put(KEY_POPULARITY, movie.popularity)
-                values.put(KEY_POSTERPATH, movie.posterPath)
-                values.put(KEY_ORIGINAL_LANGUAGE, movie.originalLanguage)
-                values.put(KEY_ORIGINAL_TITLE, movie.originalTitle)
-                values.put(KEY_GENRE_IDS, DBUtils.transformIntegerListToString(movie.genreIds))
-                values.put(KEY_BACKDROPPATH, movie.backdropPath)
-                values.put(KEY_ADULT, if (movie.adult) 1 else 0)
-                values.put(KEY_OVERVIEW, movie.overview)
-                values.put(KEY_RELEASEDATE, movie.releaseDate)
-
-                db.insertOrThrow(TABLE_MOVIE, null, values)
-            }
-            db.setTransactionSuccessful()
-        } catch (e: Exception) {
-            Log.d("MoviesDB", "Error while trying to add movie to database")
-        } finally {
-            db.endTransaction()
-        }
-    }
-
-    fun getAllMovies(): List<MovieEntity> {
-        val movieList = mutableListOf<MovieEntity>()
-
-        val MOVIES_SELECT_QUERY = "SELECT * FROM $TABLE_MOVIE"
-
-        val db = readableDatabase
-        val cursor = db.rawQuery(MOVIES_SELECT_QUERY, null)
-        try {
-            if (cursor!!.moveToFirst()) {
-                do {
-                    movieList.add(createMovie(cursor))
-                } while (cursor.moveToNext())
-            }
-        } catch (e: Exception) {
-            Log.d("MoviesDB", "Error while trying to get movies from database")
-        } finally {
-            if (cursor != null && !cursor.isClosed) {
-                cursor.close()
-            }
-        }
-        return movieList
-    }
-
-    fun getMovie(id: Int): MovieEntity? {
-        var movieEntity: MovieEntity? = null
-
-        val MOVIE_SELECT_QUERY = "SELECT * FROM $TABLE_MOVIE WHERE $KEY_ID = $id"
-
-        val db = readableDatabase
-        val cursor = db.rawQuery(MOVIE_SELECT_QUERY, null)
-        try {
-            if (cursor!!.moveToFirst()) {
-                do {
-                    movieEntity = createMovie(cursor)
-                } while (cursor.moveToNext())
-            }
-        } catch (e: Exception) {
-            Log.d("MoviesDB", "Error while trying to get movie from database")
-        } finally {
-            if (cursor != null && !cursor.isClosed) {
-                cursor.close()
-            }
-        }
-        return movieEntity
-    }
-
-    fun deleteAllMovies() {
-        val db = writableDatabase
-        try {
-            db.delete(TABLE_MOVIE, null, null)
-        } catch (e: Exception) {
-            Log.d("MoviesDB", "Error while trying to delete all movies")
-        }
-
-    }
-
-    private fun createMovie(cursor: Cursor): MovieEntity {
-        return MovieEntity(
-                cursor.getInt(cursor.getColumnIndex(KEY_ID)),
-                cursor.getInt(cursor.getColumnIndex(KEY_VOTE_COUNT)),
-                cursor.getInt(cursor.getColumnIndex(KEY_VIDEO)) == 1,
-                cursor.getString(cursor.getColumnIndex(KEY_VOTE_AVERAGE)),
-                cursor.getString(cursor.getColumnIndex(KEY_TITLE)),
-                cursor.getFloat(cursor.getColumnIndex(KEY_POPULARITY)),
-                cursor.getString(cursor.getColumnIndex(KEY_POSTERPATH)),
-                cursor.getString(cursor.getColumnIndex(KEY_ORIGINAL_LANGUAGE)),
-                cursor.getString(cursor.getColumnIndex(KEY_ORIGINAL_TITLE)),
-                DBUtils.transformStringToIntegerList(
-                        cursor.getString(cursor.getColumnIndex(KEY_GENRE_IDS))),
-                cursor.getString(cursor.getColumnIndex(KEY_BACKDROPPATH)),
-                cursor.getInt(cursor.getColumnIndex(KEY_ADULT)) == 1,
-                cursor.getString(cursor.getColumnIndex(KEY_OVERVIEW)),
-                cursor.getString(cursor.getColumnIndex(KEY_RELEASEDATE)))
     }
 
 }
