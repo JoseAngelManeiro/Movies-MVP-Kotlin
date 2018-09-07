@@ -10,12 +10,15 @@ import com.joseangelmaneiro.movies.domain.Movie
 import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 
+
+const val MOVIE_ID = 1234
 
 class MoviesRepositoryImplTest {
 
@@ -36,7 +39,6 @@ class MoviesRepositoryImplTest {
     private lateinit var movieHandler: Handler<Movie>
 
     private val moviesHandlerCaptor = argumentCaptor<Handler<List<MovieEntity>>>()
-    private val movieHandlerCaptor = argumentCaptor<Handler<MovieEntity>>()
 
 
     @Before
@@ -83,26 +85,14 @@ class MoviesRepositoryImplTest {
 
     @Test
     fun getMovie_ReturnsMovieFromLocalDataSource() {
-        // When calling getMovie in the repository
-        sut.getMovie(movie.id, movieHandler)
-
         // Make the local data source return data
-        setMovieAvailable(movieEntity)
+        givenAValidMovie(movieEntity)
+
+        // When calling getMovie in the repository
+        sut.getMovie(MOVIE_ID, movieHandler)
 
         // Verify the movie from the local data source are returned
         verify(movieHandler).handle(movie)
-    }
-
-    @Test
-    fun getMovie_FiresErrorFromLocalDataSource() {
-        // When calling getMovie in the repository
-        sut.getMovie(movie.id, movieHandler)
-
-        // Make the local data source return error
-        setMovieError(movie.id)
-
-        // Verify that the error is returned
-        verify(movieHandler).error()
     }
 
 
@@ -116,14 +106,8 @@ class MoviesRepositoryImplTest {
         moviesHandlerCaptor.firstValue.handle(movieEntityList)
     }
 
-    private fun setMovieError(movieId: Int) {
-        verify(localDataSource).getMovie(eq(movieId), movieHandlerCaptor.capture())
-        movieHandlerCaptor.firstValue.error()
-    }
-
-    private fun setMovieAvailable(movieEntity: MovieEntity) {
-        verify(localDataSource).getMovie(eq(movieEntity.id), movieHandlerCaptor.capture())
-        movieHandlerCaptor.firstValue.handle(movieEntity)
+    private fun givenAValidMovie(movieEntity: MovieEntity) {
+        whenever(localDataSource.getMovie(eq(MOVIE_ID))).thenReturn(movieEntity)
     }
 
 }
