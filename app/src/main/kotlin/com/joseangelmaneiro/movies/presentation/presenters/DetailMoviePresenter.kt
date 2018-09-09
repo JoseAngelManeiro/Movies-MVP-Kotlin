@@ -35,9 +35,7 @@ class DetailMoviePresenter(private val useCaseFactory: UseCaseFactory,
         }
     }
 
-    override fun error(exception: Exception) {
-        view.get()?.showErrorMessage()
-    }
+    override fun error(ignored: Exception) {}
 
     fun navUpSelected() {
         view.get()?.goToBack()

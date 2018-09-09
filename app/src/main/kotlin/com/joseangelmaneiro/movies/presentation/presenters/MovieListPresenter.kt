@@ -47,7 +47,7 @@ class MovieListPresenter(private val useCaseFactory: UseCaseFactory,
     override fun error(exception: Exception) {
         view.get()?.let {
             it.cancelRefreshDialog()
-            it.showErrorMessage()
+            it.showErrorMessage(exception.message!!)
         }
     }
 

@@ -7,10 +7,10 @@ import com.joseangelmaneiro.movies.presentation.BaseView
 
 abstract class BaseActivity : AppCompatActivity(), BaseView {
 
-    override fun showErrorMessage() {
+    override fun showErrorMessage(message: String) {
         val builder = AlertDialog.Builder(this,
                 R.style.Theme_AppCompat_Light_Dialog_Alert)
-        builder.setMessage(getString(R.string.error_has_ocurred))
+        builder.setMessage(message)
         builder.setPositiveButton(android.R.string.ok){ dialog, _ ->
             dialog.dismiss()
         }

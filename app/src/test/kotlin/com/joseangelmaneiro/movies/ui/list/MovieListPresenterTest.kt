@@ -90,10 +90,10 @@ class MovieListPresenterTest {
     @Test
     fun invokeGetMovies_ShowsError() {
         sut.invokeGetMovies()
-        setMoviesError()
+        setMoviesError(Exception("Fake error"))
 
         verify(view).cancelRefreshDialog()
-        verify(view).showErrorMessage()
+        verify(view).showErrorMessage("Fake error")
     }
 
     @Test
@@ -147,9 +147,9 @@ class MovieListPresenterTest {
         moviesHandlerCaptor.firstValue.handle(movieList)
     }
 
-    private fun setMoviesError() {
+    private fun setMoviesError(exception: Exception) {
         verify(useCase).execute(moviesHandlerCaptor.capture(), any())
-        moviesHandlerCaptor.firstValue.error(Exception())
+        moviesHandlerCaptor.firstValue.error(exception)
     }
 
 }

@@ -101,14 +101,6 @@ class DetailMoviePresenterTest {
     }
 
     @Test
-    fun viewReady_FiresErrorMessage() {
-        sut.viewReady()
-        setMoviesError()
-
-        verify(view).showErrorMessage()
-    }
-
-    @Test
     fun navUpSelected_InvokesGoToBack() {
         sut.navUpSelected()
 
@@ -119,11 +111,6 @@ class DetailMoviePresenterTest {
     private fun setMovieAvailable(movie: Movie) {
         verify(useCase).execute(movieHandlerCaptor.capture(), any())
         movieHandlerCaptor.firstValue.handle(movie)
-    }
-
-    private fun setMoviesError() {
-        verify(useCase).execute(movieHandlerCaptor.capture(), any())
-        movieHandlerCaptor.firstValue.error(Exception())
     }
 
 }
