@@ -10,7 +10,7 @@ import com.joseangelmaneiro.movies.data.source.local.MoviesLocalDataSource
 import com.joseangelmaneiro.movies.data.source.local.MoviesLocalDataSourceImpl
 import com.joseangelmaneiro.movies.data.source.remote.MoviesRemoteDataSource
 import com.joseangelmaneiro.movies.data.source.remote.MoviesRemoteDataSourceImpl
-import com.joseangelmaneiro.movies.data.source.remote.net.MovieService
+import com.joseangelmaneiro.movies.data.source.remote.MovieService
 import com.joseangelmaneiro.movies.domain.MoviesRepository
 import dagger.Module
 import dagger.Provides

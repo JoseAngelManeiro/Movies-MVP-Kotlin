@@ -5,13 +5,12 @@ import com.joseangelmaneiro.movies.data.entity.MovieEntity
 import com.joseangelmaneiro.movies.data.entity.PageEntity
 import com.joseangelmaneiro.movies.data.exception.NetworkConnectionException
 import com.joseangelmaneiro.movies.data.exception.ServiceException
-import com.joseangelmaneiro.movies.data.source.remote.net.MovieService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 // TODO Put here your api key (https://developers.themoviedb.org/3/getting-started)
-private const val API_KEY = "8f2e6e734988b4bc5eac72bd3dd62afe"
+private const val API_KEY = ""
 
 class MoviesRemoteDataSourceImpl(private val movieService: MovieService): MoviesRemoteDataSource {
 

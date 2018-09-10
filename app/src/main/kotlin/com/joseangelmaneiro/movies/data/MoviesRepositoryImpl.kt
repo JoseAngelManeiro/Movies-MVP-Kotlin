@@ -14,23 +14,6 @@ class MoviesRepositoryImpl(
         private val remoteDataSource: MoviesRemoteDataSource,
         private val entityDataMapper: EntityDataMapper): MoviesRepository {
 
-    companion object {
-        private var INSTANCE: MoviesRepositoryImpl? = null
-
-        fun getInstance(localDataSource: MoviesLocalDataSource,
-                        remoteDataSource: MoviesRemoteDataSource,
-                        entityDataMapper: EntityDataMapper): MoviesRepositoryImpl{
-            if(INSTANCE==null){
-                INSTANCE = MoviesRepositoryImpl(localDataSource, remoteDataSource, entityDataMapper)
-            }
-            return INSTANCE!!
-        }
-
-        fun destroyInstance() {
-            INSTANCE = null
-        }
-    }
-
     override fun getMovies(handler: Handler<List<Movie>>) {
         remoteDataSource.getMovies(object : Handler<List<MovieEntity>> {
             override fun handle(movieEntityList: List<MovieEntity>) {

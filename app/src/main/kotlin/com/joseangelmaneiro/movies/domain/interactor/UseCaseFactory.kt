@@ -2,7 +2,6 @@ package com.joseangelmaneiro.movies.domain.interactor
 
 import com.joseangelmaneiro.movies.domain.Movie
 import com.joseangelmaneiro.movies.domain.MoviesRepository
-import com.joseangelmaneiro.movies.domain.UseCase
 import javax.inject.Inject
 
 

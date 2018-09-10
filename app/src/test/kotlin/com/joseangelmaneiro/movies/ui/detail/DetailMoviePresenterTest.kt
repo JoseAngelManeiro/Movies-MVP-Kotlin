@@ -3,7 +3,7 @@ package com.joseangelmaneiro.movies.ui.detail
 import com.joseangelmaneiro.movies.TestUtils
 import com.joseangelmaneiro.movies.domain.Handler
 import com.joseangelmaneiro.movies.domain.Movie
-import com.joseangelmaneiro.movies.domain.UseCase
+import com.joseangelmaneiro.movies.domain.interactor.UseCase
 import com.joseangelmaneiro.movies.domain.interactor.GetMovie
 import com.joseangelmaneiro.movies.domain.interactor.UseCaseFactory
 import com.joseangelmaneiro.movies.presentation.presenters.DetailMoviePresenter

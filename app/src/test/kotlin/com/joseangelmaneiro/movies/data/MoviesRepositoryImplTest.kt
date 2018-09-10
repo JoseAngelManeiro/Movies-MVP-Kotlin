@@ -8,7 +8,6 @@ import com.joseangelmaneiro.movies.data.source.remote.MoviesRemoteDataSource
 import com.joseangelmaneiro.movies.domain.Handler
 import com.joseangelmaneiro.movies.domain.Movie
 import com.nhaarman.mockitokotlin2.*
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -42,12 +41,7 @@ class MoviesRepositoryImplTest {
     @Throws(Exception::class)
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        sut = MoviesRepositoryImpl.getInstance(localDataSource, remoteDataSource, EntityDataMapper())
-    }
-
-    @After
-    fun destroyRepositoryInstance() {
-        MoviesRepositoryImpl.destroyInstance()
+        sut = MoviesRepositoryImpl(localDataSource, remoteDataSource, EntityDataMapper())
     }
 
     @Test
