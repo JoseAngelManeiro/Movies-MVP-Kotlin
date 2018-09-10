@@ -11,21 +11,9 @@ import retrofit2.Callback
 import retrofit2.Response
 
 // TODO Put here your api key (https://developers.themoviedb.org/3/getting-started)
-private const val API_KEY = ""
+private const val API_KEY = "8f2e6e734988b4bc5eac72bd3dd62afe"
 
-class MoviesRemoteDataSourceImpl private constructor(
-        private val movieService: MovieService): MoviesRemoteDataSource {
-
-    companion object {
-        private var INSTANCE: MoviesRemoteDataSource? = null
-
-        fun getInstance(movieService: MovieService): MoviesRemoteDataSource{
-            if(INSTANCE==null){
-                INSTANCE = MoviesRemoteDataSourceImpl(movieService)
-            }
-            return INSTANCE!!
-        }
-    }
+class MoviesRemoteDataSourceImpl(private val movieService: MovieService): MoviesRemoteDataSource {
 
     override fun getMovies(handler: Handler<List<MovieEntity>>) {
         movieService.getMovies(API_KEY).enqueue(object : Callback<PageEntity>{

@@ -29,20 +29,8 @@ private const val KEY_OVERVIEW = "overview"
 private const val KEY_RELEASEDATE = "releasedate"
 
 
-class MoviesDatabaseHelper private constructor(context: Context):
+class MoviesDatabaseHelper(context: Context):
         SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
-
-    companion object {
-        private var INSTANCE: MoviesDatabaseHelper? = null
-
-        fun getInstance(context: Context): MoviesDatabaseHelper {
-            if (INSTANCE == null) {
-                INSTANCE = MoviesDatabaseHelper(context)
-            }
-            return INSTANCE!!
-        }
-    }
-
 
     // Called when the database is created for the FIRST time.
     override fun onCreate(db: SQLiteDatabase) {

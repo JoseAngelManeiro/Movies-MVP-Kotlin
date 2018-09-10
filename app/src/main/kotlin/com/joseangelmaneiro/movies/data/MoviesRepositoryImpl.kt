@@ -9,7 +9,7 @@ import com.joseangelmaneiro.movies.domain.Movie
 import com.joseangelmaneiro.movies.domain.MoviesRepository
 
 
-class MoviesRepositoryImpl private constructor(
+class MoviesRepositoryImpl(
         private val localDataSource: MoviesLocalDataSource,
         private val remoteDataSource: MoviesRemoteDataSource,
         private val entityDataMapper: EntityDataMapper): MoviesRepository {

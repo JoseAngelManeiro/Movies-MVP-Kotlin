@@ -3,9 +3,10 @@ package com.joseangelmaneiro.movies.presentation.formatters
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 
-class Formatter {
+class Formatter @Inject constructor() {
 
     companion object {
 

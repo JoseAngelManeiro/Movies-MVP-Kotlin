@@ -2,17 +2,16 @@ package com.joseangelmaneiro.movies.platform.views
 
 import android.os.Bundle
 import com.joseangelmaneiro.movies.R
-import com.joseangelmaneiro.movies.di.Injection
 import com.joseangelmaneiro.movies.platform.navigateToDetail
-import com.joseangelmaneiro.movies.presentation.formatters.Formatter
 import com.joseangelmaneiro.movies.presentation.presenters.MovieListPresenter
 import com.joseangelmaneiro.movies.presentation.MovieListView
 import kotlinx.android.synthetic.main.activity_movie_list.*
+import javax.inject.Inject
 
 
 class MovieListActivity : BaseActivity(), MovieListView {
 
-    private lateinit var presenter: MovieListPresenter
+    @Inject lateinit var presenter: MovieListPresenter
 
     private lateinit var adapter: MoviesAdapter
 
@@ -21,8 +20,6 @@ class MovieListActivity : BaseActivity(), MovieListView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_list)
 
-        setUpPresenter()
-
         setUpActionBar()
 
         setUpListView()
@@ -30,12 +27,6 @@ class MovieListActivity : BaseActivity(), MovieListView {
         setUpRefreshView()
 
         informPresenterViewIsReady()
-    }
-
-    private fun setUpPresenter() {
-        presenter = MovieListPresenter(Injection.provideUseCaseFactory(applicationContext),
-                Formatter())
-        presenter.setView(this)
     }
 
     private fun setUpActionBar() {

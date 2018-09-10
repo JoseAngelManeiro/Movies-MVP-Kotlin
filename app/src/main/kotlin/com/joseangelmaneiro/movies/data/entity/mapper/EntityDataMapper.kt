@@ -2,10 +2,11 @@ package com.joseangelmaneiro.movies.data.entity.mapper
 
 import com.joseangelmaneiro.movies.data.entity.MovieEntity
 import com.joseangelmaneiro.movies.domain.Movie
+import javax.inject.Inject
 
 
 // Mapper class used to transform MovieEntity, in the data layer, to Movie, in the domain layer.
-class EntityDataMapper {
+class EntityDataMapper @Inject constructor() {
 
     fun transform(movieEntity: MovieEntity?): Movie? {
         var movie: Movie? = null

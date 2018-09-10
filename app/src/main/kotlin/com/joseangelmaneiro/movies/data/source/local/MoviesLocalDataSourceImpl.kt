@@ -5,19 +5,8 @@ import com.joseangelmaneiro.movies.data.entity.MovieEntity
 import java.util.ArrayList
 
 
-class MoviesLocalDataSourceImpl private constructor(
-        private val sqLiteOpenHelper: SQLiteOpenHelper) : MoviesLocalDataSource {
-
-    companion object {
-        private var INSTANCE: MoviesLocalDataSourceImpl? = null
-
-        fun getInstance(sqLiteOpenHelper: SQLiteOpenHelper): MoviesLocalDataSourceImpl {
-            if (INSTANCE == null) {
-                INSTANCE = MoviesLocalDataSourceImpl(sqLiteOpenHelper)
-            }
-            return INSTANCE!!
-        }
-    }
+class MoviesLocalDataSourceImpl(
+        private val sqLiteOpenHelper: SQLiteOpenHelper): MoviesLocalDataSource {
 
     override fun getMovies(): List<MovieEntity> {
         val db = sqLiteOpenHelper.readableDatabase

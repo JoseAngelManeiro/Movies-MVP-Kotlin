@@ -3,9 +3,10 @@ package com.joseangelmaneiro.movies.domain.interactor
 import com.joseangelmaneiro.movies.domain.Movie
 import com.joseangelmaneiro.movies.domain.MoviesRepository
 import com.joseangelmaneiro.movies.domain.UseCase
+import javax.inject.Inject
 
 
-class UseCaseFactory(private val repository: MoviesRepository) {
+class UseCaseFactory @Inject constructor(private val repository: MoviesRepository) {
 
     fun getMovie(): UseCase<Movie, GetMovie.Params> {
         return GetMovie(repository)

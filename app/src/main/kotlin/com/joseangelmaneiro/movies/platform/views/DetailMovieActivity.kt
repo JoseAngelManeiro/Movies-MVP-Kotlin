@@ -3,8 +3,6 @@ package com.joseangelmaneiro.movies.platform.views
 import android.os.Bundle
 import android.view.MenuItem
 import com.joseangelmaneiro.movies.R
-import com.joseangelmaneiro.movies.di.Injection
-import com.joseangelmaneiro.movies.presentation.formatters.Formatter
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail_movie.*
 import kotlinx.android.synthetic.main.content_detail_movie.*
@@ -12,6 +10,7 @@ import android.content.Intent
 import android.app.Activity
 import com.joseangelmaneiro.movies.presentation.presenters.DetailMoviePresenter
 import com.joseangelmaneiro.movies.presentation.DetailMovieView
+import javax.inject.Inject
 
 
 class DetailMovieActivity : BaseActivity(), DetailMovieView {
@@ -25,26 +24,16 @@ class DetailMovieActivity : BaseActivity(), DetailMovieView {
         }
     }
 
-    private lateinit var presenter: DetailMoviePresenter
+    @Inject lateinit var presenter: DetailMoviePresenter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_movie)
 
-        setUpPresenter()
-
         setUpActionBar()
 
         informPresenterViewIsReady()
-    }
-
-    private fun setUpPresenter() {
-        val movieId = intent.getIntExtra(EXTRA_MOVIE_ID, -1)
-        presenter = DetailMoviePresenter(Injection.provideUseCaseFactory(applicationContext),
-                Formatter(),
-                movieId)
-        presenter.setView(this)
     }
 
     private fun setUpActionBar() {
