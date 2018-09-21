@@ -30,6 +30,8 @@ ext {
     retrofitVersion = '2.1.0'
     mockitoKotlinVersion = '2.0.0-RC1'
     daggerVersion = '2.13'
+    rxKotlinVersion = '2.2.0'
+    rxAndroidVersion = '2.0.1'
 }
 
 task clean(type: Delete) {
