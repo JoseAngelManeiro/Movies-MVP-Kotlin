@@ -1,23 +1,19 @@
 package com.joseangelmaneiro.movies.domain.interactor
 
-import com.joseangelmaneiro.movies.domain.Handler
 import com.joseangelmaneiro.movies.domain.Movie
 import com.joseangelmaneiro.movies.domain.MoviesRepository
+import com.joseangelmaneiro.movies.domain.executor.JobScheduler
+import com.joseangelmaneiro.movies.domain.executor.UIScheduler
+import io.reactivex.Single
 
 
-class GetMovie(private val repository: MoviesRepository): UseCase<Movie, GetMovie.Params> {
+class GetMovie(
+    private val repository: MoviesRepository,
+    uiScheduler: UIScheduler,
+    jobScheduler: JobScheduler): UseCase<Movie, GetMovie.Params>(uiScheduler, jobScheduler) {
 
-    override fun execute(handler: Handler<Movie>, params: Params) {
-        repository.getMovie(params.movieId, object : Handler<Movie>{
-            override fun handle(movie: Movie) {
-                handler.handle(movie)
-            }
-
-            override fun error(exception: Exception) {
-                handler.error(exception)
-            }
-
-        })
+    override fun buildUseCaseObservable(params: Params): Single<Movie> {
+        return Single.just(repository.getMovie(params.movieId))
     }
 
     class Params(val movieId: Int)

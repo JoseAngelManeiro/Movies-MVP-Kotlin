@@ -1,7 +1,7 @@
 package com.joseangelmaneiro.movies.presentation.presenters
 
-import com.joseangelmaneiro.movies.domain.Handler
 import com.joseangelmaneiro.movies.domain.Movie
+import com.joseangelmaneiro.movies.domain.Observer
 import com.joseangelmaneiro.movies.domain.interactor.GetMovie
 import com.joseangelmaneiro.movies.domain.interactor.UseCaseFactory
 import com.joseangelmaneiro.movies.presentation.DetailMovieView
@@ -11,7 +11,7 @@ import java.lang.ref.WeakReference
 
 class DetailMoviePresenter(private val useCaseFactory: UseCaseFactory,
                            private val formatter: Formatter,
-                           private val movieId: Int) : Handler<Movie> {
+                           private val movieId: Int) {
 
     private lateinit var view: WeakReference<DetailMovieView>
     
@@ -22,20 +22,20 @@ class DetailMoviePresenter(private val useCaseFactory: UseCaseFactory,
 
     fun viewReady() {
         val useCase = useCaseFactory.getMovie()
-        useCase.execute(this, GetMovie.Params(movieId))
+        useCase.execute(MovieObserver(), GetMovie.Params(movieId))
     }
 
-    override fun handle(movie: Movie) {
-        view.get()?.let { detailMovieView ->
-            detailMovieView.displayImage(formatter.getCompleteUrlImage(movie.backdropPath))
-            detailMovieView.displayTitle(movie.title)
-            detailMovieView.displayVoteAverage(movie.voteAverage)
-            detailMovieView.displayReleaseDate(formatter.formatDate(movie.releaseDate))
-            detailMovieView.displayOverview(movie.overview)
+    private inner class MovieObserver : Observer<Movie>() {
+        override fun onSuccess(movie: Movie) {
+            view.get()?.let {
+                it.displayImage(formatter.getCompleteUrlImage(movie.backdropPath))
+                it.displayTitle(movie.title)
+                it.displayVoteAverage(movie.voteAverage)
+                it.displayReleaseDate(formatter.formatDate(movie.releaseDate))
+                it.displayOverview(movie.overview)
+            }
         }
     }
-
-    override fun error(ignored: Exception) {}
 
     fun navUpSelected() {
         view.get()?.goToBack()

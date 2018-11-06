@@ -1,41 +1,43 @@
 package com.joseangelmaneiro.movies.ui.detail
 
 import com.joseangelmaneiro.movies.TestUtils
-import com.joseangelmaneiro.movies.domain.Handler
 import com.joseangelmaneiro.movies.domain.Movie
+import com.joseangelmaneiro.movies.domain.Observer
 import com.joseangelmaneiro.movies.domain.interactor.UseCase
 import com.joseangelmaneiro.movies.domain.interactor.GetMovie
 import com.joseangelmaneiro.movies.domain.interactor.UseCaseFactory
 import com.joseangelmaneiro.movies.presentation.presenters.DetailMoviePresenter
 import com.joseangelmaneiro.movies.presentation.DetailMovieView
 import com.joseangelmaneiro.movies.presentation.formatters.Formatter
-import com.nhaarman.mockitokotlin2.*
-import org.junit.Assert.*
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.argumentCaptor
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
+import junit.framework.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 
-
 private const val MOVIE_ID = 1234
+private const val RELEASE_DATE = "22/10/2017"
+private const val IMAGE_URL = "https://image.tmdb.org/t/p/w500fake_poster_path.png"
 
 class DetailMoviePresenterTest {
 
-    private val movie = TestUtils.createMovie()
+    @Mock
+    lateinit var useCaseFactory: UseCaseFactory
+    @Mock
+    lateinit var useCase: UseCase<Movie, GetMovie.Params>
+    @Mock
+    lateinit var formatter: Formatter
+    @Mock
+    lateinit var view: DetailMovieView
 
-    private lateinit var sut: DetailMoviePresenter
-    @Mock
-    private lateinit var useCaseFactory: UseCaseFactory
-    @Mock
-    private lateinit var useCase: UseCase<Movie, GetMovie.Params>
-    @Mock
-    private lateinit var formatter: Formatter
-    @Mock
-    private lateinit var view: DetailMovieView
-    private val movieHandlerCaptor = argumentCaptor<Handler<Movie>>()
-    private val paramsCaptor = argumentCaptor<GetMovie.Params>()
+    val paramsCaptor = argumentCaptor<GetMovie.Params>()
+    val observerCaptor = argumentCaptor<Observer<Movie>>()
 
+    lateinit var sut: DetailMoviePresenter
 
     @Before
     @Throws(Exception::class)
@@ -57,47 +59,18 @@ class DetailMoviePresenterTest {
     }
 
     @Test
-    fun viewReady_InvokesDisplayImage() {
-        val fakePath = "fake-path"
-        whenever(formatter.getCompleteUrlImage(anyString())).thenReturn(fakePath)
-        sut.viewReady()
-        setMovieAvailable(movie)
+    fun displayValuesWhenUseReturnsAMovie() {
+        val movie = whenUseCaseReturnsAMovie()
 
-        verify(view).displayImage(eq(fakePath))
+        thenDisplayMovieValues(movie)
     }
 
-    @Test
-    fun viewReady_InvokesDisplayTitle() {
-        sut.viewReady()
-        setMovieAvailable(movie)
-
-        verify(view).displayTitle(eq(movie.title))
-    }
-
-    @Test
-    fun viewReady_InvokesDisplayVoteAverage() {
-        sut.viewReady()
-        setMovieAvailable(movie)
-
-        verify(view).displayVoteAverage(eq(movie.voteAverage))
-    }
-
-    @Test
-    fun viewReady_InvokesDisplayReleaseDate() {
-        val fakeDate = "22/10/2017"
-        whenever(formatter.formatDate(anyString())).thenReturn(fakeDate)
-        sut.viewReady()
-        setMovieAvailable(movie)
-
-        verify(view).displayReleaseDate(eq(fakeDate))
-    }
-
-    @Test
-    fun viewReady_InvokesDisplayOverview() {
-        sut.viewReady()
-        setMovieAvailable(movie)
-
-        verify(view).displayOverview(eq(movie.overview))
+    private fun thenDisplayMovieValues(movie: Movie) {
+        verify(view).displayImage(IMAGE_URL)
+        verify(view).displayTitle(movie.title)
+        verify(view).displayVoteAverage(movie.voteAverage)
+        verify(view).displayReleaseDate(RELEASE_DATE)
+        verify(view).displayOverview(movie.overview)
     }
 
     @Test
@@ -107,10 +80,15 @@ class DetailMoviePresenterTest {
         verify(view).goToBack()
     }
 
+    private fun whenUseCaseReturnsAMovie(): Movie {
+        val movie = TestUtils.createMovie()
+        whenever(formatter.getCompleteUrlImage(movie.backdropPath)).thenReturn(IMAGE_URL)
+        whenever(formatter.formatDate(movie.releaseDate)).thenReturn(RELEASE_DATE)
 
-    private fun setMovieAvailable(movie: Movie) {
-        verify(useCase).execute(movieHandlerCaptor.capture(), any())
-        movieHandlerCaptor.firstValue.handle(movie)
+        sut.viewReady()
+
+        verify(useCase).execute(observerCaptor.capture(), any())
+        observerCaptor.firstValue.onSuccess(movie)
+        return movie
     }
-
 }

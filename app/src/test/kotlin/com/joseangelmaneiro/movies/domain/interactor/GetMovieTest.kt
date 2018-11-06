@@ -1,29 +1,26 @@
 package com.joseangelmaneiro.movies.domain.interactor
 
 import com.joseangelmaneiro.movies.TestUtils
-import com.joseangelmaneiro.movies.domain.Handler
 import com.joseangelmaneiro.movies.domain.Movie
 import com.joseangelmaneiro.movies.domain.MoviesRepository
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.argumentCaptor
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
+import io.reactivex.observers.TestObserver
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 
-class GetMovieTest{
+private const val MOVIE_ID = 1234
 
-    private val fakeMovieId = 1234
+class GetMovieTest {
 
     lateinit var sut: GetMovie
+
     @Mock
     lateinit var repository: MoviesRepository
-    @Mock
-    lateinit var handler: Handler<Movie>
 
-    val movieCaptor = argumentCaptor<Handler<Movie>>()
+    private val testObserver = TestObserver<Movie>()
 
 
     @Before
@@ -31,30 +28,17 @@ class GetMovieTest{
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        sut = GetMovie(repository)
+        sut = GetMovie(repository, mock(), mock())
     }
 
     @Test
-    fun execute_InvokesRepository() {
-        sut.execute(handler, GetMovie.Params(fakeMovieId))
+    fun useCaseInvokesTheRepositoryAndReturnsAMovie() {
+        val repositoryResponse = TestUtils.createMovie()
+        whenever(repository.getMovie(MOVIE_ID)).thenReturn(repositoryResponse)
 
-        verify(repository).getMovie(eq(fakeMovieId), any())
-    }
+        sut.buildUseCaseObservable(GetMovie.Params(MOVIE_ID)).subscribe(testObserver)
 
-    @Test
-    fun execute_ReturnsMovie() {
-        val movie = TestUtils.createMovie()
-
-        sut.execute(handler, GetMovie.Params(fakeMovieId))
-        setMovieAvailable(movie)
-
-        verify(handler).handle(eq(movie))
-    }
-
-
-    private fun setMovieAvailable(movie: Movie) {
-        verify(repository).getMovie(eq(fakeMovieId), movieCaptor.capture())
-        movieCaptor.firstValue.handle(movie)
+        testObserver.assertValue(repositoryResponse)
     }
 
 }

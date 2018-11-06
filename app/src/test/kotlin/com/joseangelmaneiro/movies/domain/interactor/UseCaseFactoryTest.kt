@@ -3,16 +3,11 @@ package com.joseangelmaneiro.movies.domain.interactor
 import org.junit.Assert.*
 import org.mockito.MockitoAnnotations
 import org.junit.Before
-import com.joseangelmaneiro.movies.domain.MoviesRepository
+import com.nhaarman.mockitokotlin2.mock
 import org.junit.Test
-import org.mockito.Mock
-
 
 
 class UseCaseFactoryTest{
-
-    @Mock
-    lateinit var repository: MoviesRepository
 
     lateinit var sut: UseCaseFactory
 
@@ -21,7 +16,7 @@ class UseCaseFactoryTest{
     @Throws(Exception::class)
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        sut = UseCaseFactory(repository)
+        sut = UseCaseFactory(mock(), mock(), mock())
     }
 
     @Test

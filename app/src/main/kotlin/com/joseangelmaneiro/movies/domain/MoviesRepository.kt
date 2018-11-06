@@ -3,8 +3,9 @@ package com.joseangelmaneiro.movies.domain
 
 interface MoviesRepository {
 
-    fun getMovies(handler: Handler<List<Movie>>)
+    @Throws(Exception::class)
+    fun getMovies(onlyOnline: Boolean): List<Movie>
 
-    fun getMovie(movieId: Int, handler: Handler<Movie>)
+    fun getMovie(movieId: Int): Movie
 
 }

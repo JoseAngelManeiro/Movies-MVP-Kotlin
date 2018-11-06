@@ -1,24 +1,30 @@
 package com.joseangelmaneiro.movies.domain.interactor
 
-import com.joseangelmaneiro.movies.domain.Handler
 import com.joseangelmaneiro.movies.domain.Movie
 import com.joseangelmaneiro.movies.domain.MoviesRepository
+import com.joseangelmaneiro.movies.domain.executor.JobScheduler
+import com.joseangelmaneiro.movies.domain.executor.UIScheduler
+import io.reactivex.Single
 
 
-class GetMovies(private val repository: MoviesRepository): UseCase<List<Movie>, Unit> {
+class GetMovies(
+    private val repository: MoviesRepository,
+    uiScheduler: UIScheduler,
+    jobScheduler: JobScheduler): UseCase<List<Movie>, GetMovies.Params>(uiScheduler, jobScheduler) {
 
-    override fun execute(handler: Handler<List<Movie>>, unused: Unit) {
-        repository.getMovies(object : Handler<List<Movie>>{
-            override fun handle(movies: List<Movie>) {
-                handler.handle(movies)
+    override fun buildUseCaseObservable(params: Params): Single<List<Movie>> {
+        return Single.create { emitter ->
+            try {
+                val movieList = repository.getMovies(params.isOnlyOnline)
+                emitter.onSuccess(movieList)
+            } catch (exception: Exception) {
+                if (!emitter.isDisposed) {
+                    emitter.onError(exception)
+                }
             }
-
-            override fun error(exception: Exception) {
-                handler.error(exception)
-            }
-
-        })
+        }
     }
 
+    class Params(val isOnlyOnline: Boolean)
 }
 

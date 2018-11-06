@@ -4,7 +4,6 @@ import com.joseangelmaneiro.movies.data.entity.MovieEntity
 import com.joseangelmaneiro.movies.data.entity.mapper.EntityDataMapper
 import com.joseangelmaneiro.movies.data.source.local.MoviesLocalDataSource
 import com.joseangelmaneiro.movies.data.source.remote.MoviesRemoteDataSource
-import com.joseangelmaneiro.movies.domain.Handler
 import com.joseangelmaneiro.movies.domain.Movie
 import com.joseangelmaneiro.movies.domain.MoviesRepository
 
@@ -14,22 +13,28 @@ class MoviesRepositoryImpl(
         private val remoteDataSource: MoviesRemoteDataSource,
         private val entityDataMapper: EntityDataMapper): MoviesRepository {
 
-    override fun getMovies(handler: Handler<List<Movie>>) {
-        remoteDataSource.getMovies(object : Handler<List<MovieEntity>> {
-            override fun handle(movieEntityList: List<MovieEntity>) {
-                localDataSource.deleteAllMovies()
-                localDataSource.saveMovies(movieEntityList)
-                handler.handle(entityDataMapper.transform(movieEntityList))
+    override fun getMovies(onlyOnline: Boolean): List<Movie> {
+        var movieEntityList: List<MovieEntity>
+        if (onlyOnline) {
+            movieEntityList = remoteDataSource.getMovies()
+            saveData(movieEntityList)
+        } else {
+            movieEntityList = localDataSource.getMovies()
+            if (movieEntityList.isEmpty()) {
+                movieEntityList = remoteDataSource.getMovies()
+                saveData(movieEntityList)
             }
-
-            override fun error(exception: Exception) {
-                handler.error(exception)
-            }
-        })
+        }
+        return entityDataMapper.transform(movieEntityList)
     }
 
-    override fun getMovie(movieId: Int, handler: Handler<Movie>) {
-        handler.handle(entityDataMapper.transform(localDataSource.getMovie(movieId))!!)
+    private fun saveData(movieEntityList: List<MovieEntity>) {
+        localDataSource.deleteAllMovies()
+        localDataSource.saveMovies(movieEntityList)
+    }
+
+    override fun getMovie(movieId: Int): Movie {
+        return entityDataMapper.transform(localDataSource.getMovie(movieId))!!
     }
 
 }

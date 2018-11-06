@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteOpenHelper
 import com.joseangelmaneiro.movies.data.MoviesRepositoryImpl
 import com.joseangelmaneiro.movies.data.entity.mapper.EntityDataMapper
+import com.joseangelmaneiro.movies.data.executor.JobThread
 import com.joseangelmaneiro.movies.data.source.local.MoviesDatabaseHelper
 import com.joseangelmaneiro.movies.data.source.local.MoviesLocalDataSource
 import com.joseangelmaneiro.movies.data.source.local.MoviesLocalDataSourceImpl
@@ -12,6 +13,9 @@ import com.joseangelmaneiro.movies.data.source.remote.MoviesRemoteDataSource
 import com.joseangelmaneiro.movies.data.source.remote.MoviesRemoteDataSourceImpl
 import com.joseangelmaneiro.movies.data.source.remote.MovieService
 import com.joseangelmaneiro.movies.domain.MoviesRepository
+import com.joseangelmaneiro.movies.domain.executor.JobScheduler
+import com.joseangelmaneiro.movies.domain.executor.UIScheduler
+import com.joseangelmaneiro.movies.platform.executor.UIThread
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -62,6 +66,18 @@ class AppModule {
                                    remoteDataSource: MoviesRemoteDataSource,
                                    entityDataMapper: EntityDataMapper): MoviesRepository {
         return MoviesRepositoryImpl(localDataSource, remoteDataSource, entityDataMapper)
+    }
+
+    @Provides
+    @Singleton
+    internal fun provideUIScheduler(): UIScheduler {
+        return UIThread()
+    }
+
+    @Provides
+    @Singleton
+    internal fun provideJobScheduler(): JobScheduler {
+        return JobThread()
     }
 
 }

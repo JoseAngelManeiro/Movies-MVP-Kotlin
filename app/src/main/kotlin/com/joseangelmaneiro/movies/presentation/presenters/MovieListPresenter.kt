@@ -1,7 +1,8 @@
 package com.joseangelmaneiro.movies.presentation.presenters
 
-import com.joseangelmaneiro.movies.domain.Handler
 import com.joseangelmaneiro.movies.domain.Movie
+import com.joseangelmaneiro.movies.domain.Observer
+import com.joseangelmaneiro.movies.domain.interactor.GetMovies
 import com.joseangelmaneiro.movies.domain.interactor.UseCaseFactory
 import com.joseangelmaneiro.movies.presentation.MovieCellView
 import com.joseangelmaneiro.movies.presentation.MovieListView
@@ -10,7 +11,7 @@ import java.lang.ref.WeakReference
 
 
 class MovieListPresenter(private val useCaseFactory: UseCaseFactory,
-                         private val formatter: Formatter) : Handler<List<Movie>> {
+                         private val formatter: Formatter) {
 
     private lateinit var view: WeakReference<MovieListView>
 
@@ -24,30 +25,32 @@ class MovieListPresenter(private val useCaseFactory: UseCaseFactory,
     }
 
     fun viewReady() {
-        invokeGetMovies()
+        invokeGetMovies(false)
     }
 
     fun refresh() {
-        invokeGetMovies()
+        invokeGetMovies(true)
     }
 
-    fun invokeGetMovies() {
+    private fun invokeGetMovies(refresh: Boolean) {
         val useCase = useCaseFactory.getMovies()
-        useCase.execute(this, Unit)
+        useCase.execute(MoviesObserver(), GetMovies.Params(refresh))
     }
 
-    override fun handle(movieList: List<Movie>) {
-        saveMovies(movieList)
-        view.get()?.let {
-            it.cancelRefreshDialog()
-            it.refreshList()
+    private inner class MoviesObserver : Observer<List<Movie>>() {
+        override fun onSuccess(movies: List<Movie>) {
+            saveMovies(movies)
+            view.get()?.let {
+                it.cancelRefreshDialog()
+                it.refreshList()
+            }
         }
-    }
 
-    override fun error(exception: Exception) {
-        view.get()?.let {
-            it.cancelRefreshDialog()
-            it.showErrorMessage(exception.message!!)
+        override fun onError(exception: Throwable) {
+            view.get()?.let {
+                it.cancelRefreshDialog()
+                it.showErrorMessage(exception.message!!)
+            }
         }
     }
 
