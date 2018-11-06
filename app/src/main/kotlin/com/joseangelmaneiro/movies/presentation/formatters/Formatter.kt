@@ -16,7 +16,7 @@ class Formatter @Inject constructor() {
         private val APP_DATE_FORMAT = "dd/MM/yyyy"
     }
 
-    fun getCompleteUrlImage(posterPath: String): String {
+    fun getCompleteUrlImage(posterPath: String?): String {
         return BASE_URL_IMAGE + posterPath
     }
 

@@ -7,6 +7,6 @@ data class Movie (
         val voteAverage: String,
         val title: String,
         val posterPath: String,
-        val backdropPath: String,
+        val backdropPath: String?,
         val overview: String,
         val releaseDate: String)
