@@ -1,4 +1,4 @@
-package com.joseangelmaneiro.movies.ui.detail
+package com.joseangelmaneiro.movies.presentation.presenters
 
 import com.joseangelmaneiro.movies.TestUtils
 import com.joseangelmaneiro.movies.domain.Movie
@@ -6,11 +6,11 @@ import com.joseangelmaneiro.movies.domain.Observer
 import com.joseangelmaneiro.movies.domain.interactor.UseCase
 import com.joseangelmaneiro.movies.domain.interactor.GetMovie
 import com.joseangelmaneiro.movies.domain.interactor.UseCaseFactory
-import com.joseangelmaneiro.movies.presentation.presenters.DetailMoviePresenter
 import com.joseangelmaneiro.movies.presentation.DetailMovieView
 import com.joseangelmaneiro.movies.presentation.formatters.Formatter
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.argumentCaptor
+import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import junit.framework.Assert.assertEquals
@@ -44,10 +44,13 @@ class DetailMoviePresenterTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        sut = DetailMoviePresenter(useCaseFactory, formatter, MOVIE_ID)
+        sut = DetailMoviePresenter(useCaseFactory, formatter,
+            MOVIE_ID
+        )
         sut.setView(view)
 
         whenever(useCaseFactory.getMovie()).thenReturn(useCase)
+        whenever(useCase.execute(any(), any())).thenReturn(mock())
     }
 
     @Test

@@ -16,7 +16,6 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsEqual
 import org.junit.Test
 
-
 const val MOVIE_ID = 1234
 
 class MoviesRepositoryImplTest {

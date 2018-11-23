@@ -81,4 +81,9 @@ class DetailMovieActivity : BaseActivity(), DetailMovieView {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.destroy()
+    }
+
 }

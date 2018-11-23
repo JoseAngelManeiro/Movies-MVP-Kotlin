@@ -11,7 +11,7 @@ import java.lang.ref.WeakReference
 
 
 class MovieListPresenter(private val useCaseFactory: UseCaseFactory,
-                         private val formatter: Formatter) {
+                         private val formatter: Formatter): BasePresenter() {
 
     private lateinit var view: WeakReference<MovieListView>
 
@@ -34,7 +34,7 @@ class MovieListPresenter(private val useCaseFactory: UseCaseFactory,
 
     private fun invokeGetMovies(refresh: Boolean) {
         val useCase = useCaseFactory.getMovies()
-        useCase.execute(MoviesObserver(), GetMovies.Params(refresh))
+        addDisposable(useCase.execute(MoviesObserver(), GetMovies.Params(refresh)))
     }
 
     private inner class MoviesObserver : Observer<List<Movie>>() {

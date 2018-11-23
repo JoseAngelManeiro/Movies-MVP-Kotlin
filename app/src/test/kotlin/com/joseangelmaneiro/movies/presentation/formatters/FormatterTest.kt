@@ -1,8 +1,7 @@
-package com.joseangelmaneiro.movies.ui
+package com.joseangelmaneiro.movies.presentation.formatters
 
-import com.joseangelmaneiro.movies.presentation.formatters.Formatter
+import org.junit.Assert
 import org.junit.Before
-import org.junit.Assert.*
 import org.junit.Test
 
 
@@ -20,7 +19,7 @@ class FormatterTest {
         val fakePath = "fake-path"
         val urlExpected = Formatter.BASE_URL_IMAGE + fakePath
 
-        assertEquals(urlExpected, sut.getCompleteUrlImage(fakePath))
+        Assert.assertEquals(urlExpected, sut.getCompleteUrlImage(fakePath))
     }
 
     @Test
@@ -28,7 +27,7 @@ class FormatterTest {
         val serverDate = "2017-10-22"
         val dateExpected = "22/10/2017"
 
-        assertEquals(dateExpected, sut.formatDate(serverDate))
+        Assert.assertEquals(dateExpected, sut.formatDate(serverDate))
     }
 
 }

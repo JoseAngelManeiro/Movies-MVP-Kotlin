@@ -62,4 +62,9 @@ class MovieListActivity : BaseActivity(), MovieListView {
         navigateToDetail(movieId)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.destroy()
+    }
+
 }

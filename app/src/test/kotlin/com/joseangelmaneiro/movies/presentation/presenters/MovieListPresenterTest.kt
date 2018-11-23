@@ -1,4 +1,4 @@
-package com.joseangelmaneiro.movies.ui.list
+package com.joseangelmaneiro.movies.presentation.presenters
 
 import com.joseangelmaneiro.movies.TestUtils
 import com.joseangelmaneiro.movies.domain.Movie
@@ -7,7 +7,6 @@ import com.joseangelmaneiro.movies.domain.interactor.GetMovies
 import com.joseangelmaneiro.movies.domain.interactor.UseCase
 import com.joseangelmaneiro.movies.domain.interactor.UseCaseFactory
 import com.joseangelmaneiro.movies.presentation.MovieCellView
-import com.joseangelmaneiro.movies.presentation.presenters.MovieListPresenter
 import com.joseangelmaneiro.movies.presentation.MovieListView
 import com.joseangelmaneiro.movies.presentation.formatters.Formatter
 import com.nhaarman.mockitokotlin2.*
@@ -47,6 +46,7 @@ class MovieListPresenterTest {
         sut.setView(view)
 
         whenever(useCaseFactory.getMovies()).thenReturn(useCase)
+        whenever(useCase.execute(any(), any())).thenReturn(mock())
     }
 
     @Test
