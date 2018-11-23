@@ -52,5 +52,11 @@ dependencies {
 
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$rootProject.mockitoKotlinVersion"
 
+    implementation "com.google.dagger:dagger:$rootProject.daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
+    kapt "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$rootProject.daggerVersion"
 
+    implementation "io.reactivex.rxjava2:rxkotlin:$rootProject.rxKotlinVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
 }

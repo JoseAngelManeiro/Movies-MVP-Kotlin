@@ -1,11 +1,11 @@
 package com.joseangelmaneiro.movies.data.source.remote
 
-import com.joseangelmaneiro.movies.data.Handler
-import com.joseangelmaneiro.movies.data.Movie
+import com.joseangelmaneiro.movies.data.entity.MovieEntity
 
 
 interface MoviesRemoteDataSource {
 
-    fun getMovies(handler: Handler<List<Movie>>)
+    @Throws(Exception::class)
+    fun getMovies(): List<MovieEntity>
 
 }

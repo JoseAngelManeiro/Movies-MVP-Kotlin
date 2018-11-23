@@ -1,47 +1,65 @@
 package com.joseangelmaneiro.movies.data.source.local
 
-import com.joseangelmaneiro.movies.data.Handler
-import com.joseangelmaneiro.movies.data.Movie
+import android.database.sqlite.SQLiteOpenHelper
+import com.joseangelmaneiro.movies.data.entity.MovieEntity
+import java.util.ArrayList
 
 
-class MoviesLocalDataSourceImpl private constructor(
-        private val moviesDatabaseHelper: MoviesDatabaseHelper) : MoviesLocalDataSource {
+class MoviesLocalDataSourceImpl(
+        private val sqLiteOpenHelper: SQLiteOpenHelper): MoviesLocalDataSource {
 
-    companion object {
-        private var INSTANCE: MoviesLocalDataSourceImpl? = null
+    override fun getMovies(): List<MovieEntity> {
+        val db = sqLiteOpenHelper.readableDatabase
+        val sql = "SELECT * FROM $TABLE_NAME"
+        val movieEntityList = ArrayList<MovieEntity>()
 
-        fun getInstance(moviesDatabaseHelper: MoviesDatabaseHelper): MoviesLocalDataSourceImpl {
-            if (INSTANCE == null) {
-                INSTANCE = MoviesLocalDataSourceImpl(moviesDatabaseHelper)
-            }
-            return INSTANCE!!
+        val cursor = db.rawQuery(sql, null)
+        if (cursor.moveToFirst()) {
+            do {
+                movieEntityList.add(MovieEntity(cursor))
+            } while (cursor.moveToNext())
         }
+
+        if (!cursor.isClosed) {
+            cursor.close()
+        }
+
+        return movieEntityList
     }
 
-    override fun getMovies(handler: Handler<List<Movie>>) {
-        val movieList = moviesDatabaseHelper.getAllMovies()
-        if (!movieList.isEmpty()) {
-            handler.handle(movieList)
-        } else {
-            handler.error()
+    override fun getMovie(movieId: Int): MovieEntity? {
+        val db = sqLiteOpenHelper.readableDatabase
+        val sql = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_ID = $movieId"
+        var movieEntity: MovieEntity? = null
+
+        val cursor = db.rawQuery(sql, null)
+        if (cursor.moveToFirst()) {
+            movieEntity = MovieEntity(cursor)
         }
+
+        if (!cursor.isClosed) {
+            cursor.close()
+        }
+
+        return movieEntity
     }
 
-    override fun getMovie(movieId: Int, handler: Handler<Movie>) {
-        val movie = moviesDatabaseHelper.getMovie(movieId)
-        if (movie != null) {
-            handler.handle(movie)
-        } else {
-            handler.error()
-        }
-    }
+    override fun saveMovies(movieEntityList: List<MovieEntity>) {
+        val db = sqLiteOpenHelper.writableDatabase
 
-    override fun saveMovies(movieList: List<Movie>) {
-        moviesDatabaseHelper.addMovies(movieList)
+        // It's a good idea to wrap our insert in a transaction.
+        // This helps with performance and ensures consistency of the database.
+        db.beginTransaction()
+        for (movieEntity in movieEntityList) {
+            db.insert(TABLE_NAME, null, movieEntity.getContentValues())
+        }
+        db.setTransactionSuccessful()
+        db.endTransaction()
     }
 
     override fun deleteAllMovies() {
-        moviesDatabaseHelper.deleteAllMovies()
+        val db = sqLiteOpenHelper.writableDatabase
+        db.delete(TABLE_NAME, null, null)
     }
 
 }
