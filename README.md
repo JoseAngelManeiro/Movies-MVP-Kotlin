@@ -1,6 +1,6 @@
 # mvp
 
-This version of the app is part of a [blog post](http://joseangelmaneiro.com/mvp-clean-1/) that talks about the [MVP](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter) pattern in Android.
+This version of the app follows the [MVP](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter) pattern in Android.
 
 ### What you need
 
