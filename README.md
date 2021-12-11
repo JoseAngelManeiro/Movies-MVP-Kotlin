@@ -1,6 +1,6 @@
 # mvp-clean-dagger-rxjava
 
-This version of the app is part of a [blog post](http://joseangelmaneiro.com/mvp-clean-rxjava/) that talks about [RxJava](https://github.com/ReactiveX/RxJava) in Android.
+This version of the app uses [RxJava](https://github.com/ReactiveX/RxJava) to handle the asynchronous work of the UseCases.
 
 ### What you need
 
